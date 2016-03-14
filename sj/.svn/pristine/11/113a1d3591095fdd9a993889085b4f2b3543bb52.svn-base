@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+		<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		<mapper namespace="com.krm.dbaudit.web.risk.mapper.DataNoticeModelMapper">
+
+	<sql id="dataNoticeColumns">
+		id, data_id, model_id, data_status,notice_status,noticeorgan_id, noticeorgan_name, 
+		bnoticeorgan_id, bnoticeorgan_name, noticestarttime, noticecolsetime, 
+		noticeendtime, noticedealrequire, noticedealrequire2, trandate, 
+		noticesender, noticedealer, noticesender2, noticedealer2, 
+		noticeorgan_id2, noticeorgan_name2 
+	</sql>
+	
+	<sql id="dataFileColumns">
+		pkid,data_id,file_name,file_content
+	</sql>
+	
+
+	<insert id="saveFile">
+		insert into model_data_file (<include refid="dataFileColumns" />)
+		values(
+		model_data_deal_file_seq.nextval,
+		#{dataId,jdbcType=INTEGER},
+		#{fileName,jdbcType=VARCHAR},
+		#{fileContent,jdbcType=BLOB}
+		)
+	</insert>
+	
+	<select id="findById" resultType="com.krm.dbaudit.web.risk.model.DataNoticeModel">
+		select <include refid="dataNoticeColumns" />
+		from model_data_notice
+		<where>
+			data_id = #{id} 
+		</where>
+	</select>
+	
+	<select id="findByPkId" resultType="com.krm.dbaudit.web.risk.model.DataNoticeModel">
+		select <include refid="dataNoticeColumns" />
+		from model_data_notice
+		<where>
+			id = #{id} 
+		</where>
+	</select>
+	
+	
+	<select id="findPageInfo" resultType="com.krm.dbaudit.web.risk.model.DataNoticeModel">
+		select id, data_id, model_id, data_status,case when notice_status='1' then '未处理'
+    	else '已处理'
+ 		end notice_status,noticeorgan_id, noticeorgan_name, 
+		bnoticeorgan_id, bnoticeorgan_name, noticestarttime, noticecolsetime, 
+		noticeendtime, noticedealrequire, noticedealrequire2, trandate, 
+		noticesender, noticedealer, noticesender2, noticedealer2, 
+		noticeorgan_id2, noticeorgan_name2
+		from model_data_notice a 
+    		<where>
+    			1=1  
+    			<if test="@Ognl@isNotBlank(status)">
+			    	and a.notice_status =  #{status}
+				</if>
+				<if test="@Ognl@isNotBlank(organId)">
+					and a.noticeorgan_id2 = #{organId}
+				</if>
+    		</where>
+		<if test="@Ognl@isNotBlank(sortC) and @Ognl@isNotBlank(order)"> 
+			ORDER BY b.${sortC}   ${order}
+		</if> 
+	</select>
+	
+	<update id="updateNoticeStatus">
+		update model_data_notice set 
+		notice_status=#{notice_status},
+		noticeendtime=#{noticeendtime},
+		noticedealer=#{noticedealer}
+		 where id=#{id}
+	</update>
+</mapper>

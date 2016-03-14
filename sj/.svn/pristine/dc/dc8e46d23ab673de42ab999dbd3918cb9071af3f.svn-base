@@ -1,0 +1,46 @@
+<div class="layer">
+    <div class="profile-user-info profile-user-info-striped wordbreak" >
+         	@for(headerMap in headerList){
+         		@if(headerMapLP.index < 2){
+	         		<div class="profile-info-row">
+	         			<div class="profile-info-name">数据编号</div>
+			            <div class="profile-info-value" id='数据编号'></div>
+			        </div>
+			        <div class="profile-info-row">
+			            <div class="profile-info-name">模型编号</div>
+			            <div class="profile-info-value" id='模型编号'></div>
+			        </div>
+		            <div class="profile-info-row">
+			            <div class="profile-info-name">机构编号</div>
+			            <div class="profile-info-value" id='机构编号'></div>
+			        </div>
+			        <div class="profile-info-row">
+			            <div class="profile-info-name">会计日期</div>
+			            <div class="profile-info-value" id='会计日期'></div>
+			        </div>
+         		@}else{
+	         		<div class="profile-info-row">
+			            <div class="profile-info-name">${headerMap.fields!}</div>
+			            <div class="profile-info-value" id='${headerMap.fields!}'></div>
+			        </div>
+		        @}
+        @}
+        
+       
+    </div>
+</div>
+
+<script>
+
+$.ajax({
+    url: "${ctxPath}/data/queryDetailsContents?modelId=${modelId!}&dataId=${dataIds!}",
+    dataType: "json",
+    type : 'post',
+    async: false,
+    success: function (data) {
+        $.each(data,function(i,obj){
+            $("#"+obj.key).text(obj.value);
+        })
+    }
+})
+</script>

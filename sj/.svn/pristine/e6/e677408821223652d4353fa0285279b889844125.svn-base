@@ -1,0 +1,12 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/views/htmltag/comtree.tag=UTF-8
+encoding//WebContent/WEB-INF/views/htmltag/dict.tag=UTF-8
+encoding//WebContent/WEB-INF/views/htmltag/flowtree.tag=UTF-8
+encoding//WebContent/WEB-INF/views/htmltag/iconselect.tag=UTF-8
+encoding//WebContent/WEB-INF/views/htmltag/modelSubjectTree.tag=UTF-8
+encoding//WebContent/WEB-INF/views/htmltag/pullDownTree.tag=UTF-8
+encoding//WebContent/WEB-INF/views/htmltag/save.tag=UTF-8
+encoding//WebContent/WEB-INF/views/htmltag/search.tag=UTF-8
+encoding//WebContent/WEB-INF/views/htmltag/systree.tag=UTF-8
+encoding//WebContent/WEB-INF/views/htmltag/treeselect.tag=UTF-8
+encoding//resources/beetl/beetl.properties=UTF-8

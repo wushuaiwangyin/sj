@@ -1,0 +1,12 @@
+package com.krm.dbaudit.web.risk.mapper;
+
+import java.util.Map;
+
+import com.krm.dbaudit.web.risk.model.DataDealModel;
+
+public interface DataDealModelMapper
+{
+	public int dataDeal(Map<String, Object> params);
+	
+	public DataDealModel findById(Integer id);
+}

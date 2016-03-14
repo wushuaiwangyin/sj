@@ -1,0 +1,120 @@
+<div class="widget-box widget-color-green2">
+	<div class="widget-header widget-header-small clearfix">
+		<h5 class="widget-title">知识库维护</h5>
+		<div class="widget-toolbar">
+			<a href="#" data-action="fullscreen" class="btn-minier orange2"> <i
+				class="ace-icon fa fa-expand"></i>
+			</a>
+		</div>
+		 
+		<div class="widget-toolbar no-border width-65" style="padding-top: 2px;">
+		</div>
+		<div class="widget-toolbar">
+            <a class="btn btn-purple btn-minier" href="javascript:void(0);"
+               data-mode="add" data-title="新建"
+               data-url="${ctxPath}/repository/audit/add"
+               data-width="50%"
+               data-reloadurl="true"
+               data-table="treeRepository"
+               >
+				<i class="ace-icon fa fa-plus-circle bigger-130"></i>
+				<span>新建</span>
+			</a>
+        </div>
+	</div>
+	<div class="widget-body">
+		<div class="widget-main padding-2">
+			<div class="row">
+				<div class="col-sm-3">
+					<div id="tree-menu-div" style="overflow: auto;">
+						<ul id="treeRepository" class="ztree"></ul>
+					</div>
+				</div>
+			<div class="widget-box" id="y_box3">
+				<div class="table-responsive">
+				<div class="col-sm-9" id="list-page">
+					<table id="table" class="table table-condensed table-striped table-bordered table-hover nomargin-bottom"
+							  data-pagination="true" 
+							  data-search="false" data-page-list="[10, 20, 50, 100, 200]"  data-striped="true"
+							  data-smart-display="false" data-unique-id="stdId"
+							  data-toggle="table">
+						<thead>
+							<tr>
+								
+								<th data-field="auditCode" data-width="90" data-align="center">编码</th>
+								<th data-field="auditTitle" data-formatter="dataDetail1" data-align="center">名称</th>
+								<th data-field="auditDesc" data-align="center">描述</th>
+								<th data-field="auditObject" data-align="center">审计对象</th>
+								<th data-field="keyword" data-align="center">关键字</th>
+								<th data-field="creatorId" data-width="90" data-align="center">创建人</th>
+								<th data-field="createTime"  data-align="center">创建时间</th>
+								<th data-align="center" data-width="80" data-formatter="operatorBtn5">操作</th>
+							</tr>
+						</thead>
+				</table>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<div id="rowBtn_edit2" style="display: none;">
+	<div class="hidden-sm hidden-xs action-buttons">
+		<a class="green" href="javascript:void(0);" 
+			title="编辑审计依据"
+			data-mode="page" data-title="编辑"
+			data-url="${ctxPath}/repository/audit/edit/showlayer"
+			data-data="{id:'{row.auditId}'}"
+			data-width="50%"
+			data-type="2"
+			>
+			<i class="ace-icon fa fa-pencil bigger-130"></i>
+		</a>
+	
+		<a class="red" href="javascript:void(0);" 
+			title="删除审计依据"
+			data-mode="del" data-title="删除操作"
+			data-msg="你确定删除该条数据吗?(慎重操作)"
+			data-url="${ctxPath}/repository/audit/delete" data-data="{id:'{row.auditId}'}"
+			data-reloadurl="true"
+			>
+			<i class="ace-icon fa fa-trash-o bigger-130"></i>
+		</a>
+	</div>
+</div>
+
+<#repositorytree treeData="${treeList}" parentId="1401"/>
+<script type="text/javascript">
+$(function(){
+    $('#table').bootstrapTable({
+    	iconSize:'sm',
+		pagination:true,
+		method:"post",
+		pageSize:10,
+		queryParamsType:'limit',
+		striped:true,
+		pageNumber:1,
+		sidePagination:'server',
+		url:'${ctxPath!}/repository/audit/list'
+    });
+})
+function loadData2(type,parentId) {
+		$('#table').bootstrapTable("refresh",{url:"${ctxPath!}/repository/audit/list?type="+type+"&parentId="+parentId})
+	}
+	
+	function dataDetail1(value,row,index){
+		return ' <a  href="javascript:void(0);"'+
+				' data-mode="detail" data-title="'+value+'    详细"'+
+				' data-url="${ctxPath}/audit/detail/showlayer"'+
+				'data-width="50%"'+
+				'data-data="{id:'+row.auditId+'}" >'+
+				value +
+				'</a>';
+	}
+function operatorBtn5(value, row) {
+		return $("#rowBtn_edit2").html()
+		.replace(new RegExp("{row.auditId}", "g"), row.auditId);
+	}
+</script>

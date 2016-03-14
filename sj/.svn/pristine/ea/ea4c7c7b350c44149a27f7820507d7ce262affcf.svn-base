@@ -1,0 +1,210 @@
+package com.krm.dbaudit.web.verify.model;
+
+public class CusGuarFlowLoan {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 客户担保流向基础数据
+	 */
+	private Long id;	//编号
+	private String contNo; //交易日期
+	private String guarContNo; //交易日期
+	private String borrowerNo; //交易日期
+	private String borrowerName; //交易日期
+	private String certCode; //交易日期
+	private String guarNo; //交易日期
+	private String guarName; //交易日期
+	private String cerNo; //交易日期
+	private String guar_way; //交易日期
+	private String guar_start_date; //交易日期
+	private String guar_end_date; //交易日期
+	private String guar_cont_state; //交易日期
+	
+	private Double guar_amt;
+	private String fina_br_id; //交易日期
+	private String organname; //交易日期
+	private String customer_mgr; //交易日期
+	private String actorname; //交易日期
+	private String gage_name; //交易日期
+	private String right_cert_no; //交易日期
+	private Double eval_amt;
+	private Double book_amt;
+	private String bill_no; //交易日期
+	private Double loan_amount;
+	private String loan_start_date; //交易日期
+	private String loan_end_date; //交易日期
+	private String account_status; //交易日期
+	private String searchUser;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getContNo() {
+		return contNo;
+	}
+	public void setContNo(String contNo) {
+		this.contNo = contNo;
+	}
+	public String getGuarContNo() {
+		return guarContNo;
+	}
+	public void setGuarContNo(String guarContNo) {
+		this.guarContNo = guarContNo;
+	}
+	public String getBorrowerNo() {
+		return borrowerNo;
+	}
+	public void setBorrowerNo(String borrowerNo) {
+		this.borrowerNo = borrowerNo;
+	}
+	public String getBorrowerName() {
+		return borrowerName;
+	}
+	public void setBorrowerName(String borrowerName) {
+		this.borrowerName = borrowerName;
+	}
+	public String getCertCode() {
+		return certCode;
+	}
+	public void setCertCode(String certCode) {
+		this.certCode = certCode;
+	}
+	public String getGuarNo() {
+		return guarNo;
+	}
+	public void setGuarNo(String guarNo) {
+		this.guarNo = guarNo;
+	}
+	public String getGuarName() {
+		return guarName;
+	}
+	public void setGuarName(String guarName) {
+		this.guarName = guarName;
+	}
+	public String getCerNo() {
+		return cerNo;
+	}
+	public void setCerNo(String cerNo) {
+		this.cerNo = cerNo;
+	}
+	public String getGuar_way() {
+		return guar_way;
+	}
+	public void setGuar_way(String guar_way) {
+		this.guar_way = guar_way;
+	}
+	public String getGuar_start_date() {
+		return guar_start_date;
+	}
+	public void setGuar_start_date(String guar_start_date) {
+		this.guar_start_date = guar_start_date;
+	}
+	public String getGuar_end_date() {
+		return guar_end_date;
+	}
+	public void setGuar_end_date(String guar_end_date) {
+		this.guar_end_date = guar_end_date;
+	}
+	public String getGuar_cont_state() {
+		return guar_cont_state;
+	}
+	public void setGuar_cont_state(String guar_cont_state) {
+		this.guar_cont_state = guar_cont_state;
+	}
+	public Double getGuar_amt() {
+		return guar_amt;
+	}
+	public void setGuar_amt(Double guar_amt) {
+		this.guar_amt = guar_amt;
+	}
+	public String getFina_br_id() {
+		return fina_br_id;
+	}
+	public void setFina_br_id(String fina_br_id) {
+		this.fina_br_id = fina_br_id;
+	}
+	public String getOrganname() {
+		return organname;
+	}
+	public void setOrganname(String organname) {
+		this.organname = organname;
+	}
+	public String getCustomer_mgr() {
+		return customer_mgr;
+	}
+	public void setCustomer_mgr(String customer_mgr) {
+		this.customer_mgr = customer_mgr;
+	}
+	public String getActorname() {
+		return actorname;
+	}
+	public void setActorname(String actorname) {
+		this.actorname = actorname;
+	}
+	public String getGage_name() {
+		return gage_name;
+	}
+	public void setGage_name(String gage_name) {
+		this.gage_name = gage_name;
+	}
+	public String getRight_cert_no() {
+		return right_cert_no;
+	}
+	public void setRight_cert_no(String right_cert_no) {
+		this.right_cert_no = right_cert_no;
+	}
+	public Double getEval_amt() {
+		return eval_amt;
+	}
+	public void setEval_amt(Double eval_amt) {
+		this.eval_amt = eval_amt;
+	}
+	public Double getBook_amt() {
+		return book_amt;
+	}
+	public void setBook_amt(Double book_amt) {
+		this.book_amt = book_amt;
+	}
+	public String getBill_no() {
+		return bill_no;
+	}
+	public void setBill_no(String bill_no) {
+		this.bill_no = bill_no;
+	}
+	public Double getLoan_amount() {
+		return loan_amount;
+	}
+	public void setLoan_amount(Double loan_amount) {
+		this.loan_amount = loan_amount;
+	}
+	public String getLoan_start_date() {
+		return loan_start_date;
+	}
+	public void setLoan_start_date(String loan_start_date) {
+		this.loan_start_date = loan_start_date;
+	}
+	public String getLoan_end_date() {
+		return loan_end_date;
+	}
+	public void setLoan_end_date(String loan_end_date) {
+		this.loan_end_date = loan_end_date;
+	}
+	public String getAccount_status() {
+		return account_status;
+	}
+	public void setAccount_status(String account_status) {
+		this.account_status = account_status;
+	}
+	public String getSearchUser() {
+		return searchUser;
+	}
+	public void setSearchUser(String searchUser) {
+		this.searchUser = searchUser;
+	}
+	
+	
+}

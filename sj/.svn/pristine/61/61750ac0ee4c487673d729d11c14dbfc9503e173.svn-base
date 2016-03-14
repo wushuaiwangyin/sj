@@ -1,0 +1,262 @@
+<div class="widget-box widget-color-green2">
+	<div class="widget-header widget-header-small clearfix">
+		<h5 class="widget-title">审计依据类型</h5>
+		<div class="widget-toolbar">
+			<a href="#" data-action="fullscreen" class="btn-minier orange2"> <i
+				class="ace-icon fa fa-expand"></i>
+			</a>
+		</div>
+		 
+		<div class="widget-toolbar no-border width-40" style="padding-top: 2px;">
+			<form method="post" class="form-search" id="search-form"  action="">
+				<div class="input-group" style="line-height: 0px;">
+					<span class="input-group-btn">
+						<span  class=" btn  btn-success btn-minier "
+							id="search-all-btn">
+							 显示全部 
+						</span> 
+					</span>
+					<input type="text" class="form-control search-query input-minier"
+						name="name" placeholder="审计依据类型" id="search-input">
+						<span class="input-group-btn">
+						<span class="btn  btn-success btn-minier"
+							id="search-btn">
+							搜索 <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+						</span>
+					</span>
+				</div>
+				<input type="hidden" name="id" />
+			</form>
+		</div>
+		<div class="widget-toolbar">
+            <a class="btn btn-purple btn-minier" href="javascript:void(0);"
+               data-mode="add" data-title="新建"
+               data-url="${ctxPath}/repository/kbstd/add"
+               data-width="50%"
+               data-reloadurl="true"
+               data-table="treeRepository"
+               >
+				<i class="ace-icon fa fa-plus-circle bigger-130"></i>
+				<span>新建</span>
+			</a>
+        </div>
+	</div>
+	<div class="widget-body">
+		<div class="widget-main padding-2">
+			<div class="row">
+				<div class="col-sm-3">
+					<div id="tree-menu-div" style="overflow: auto;">
+						<ul id="treeRepository" class="ztree"></ul>
+					</div>
+				</div>
+			<div class="widget-box" id="y_box1">
+				<div class="table-responsive">
+				<div class="col-sm-9" id="list-page">
+					<table id="table" class="table table-condensed table-striped table-bordered table-hover nomargin-bottom"
+							  data-pagination="true" 
+							  data-search="false" data-page-list="[10, 20, 50, 100, 200]"  data-striped="true"
+							  data-smart-display="false" data-unique-id="stdId"
+							  data-toggle="table">
+						<thead>
+							<tr>
+								
+								<th data-field="stdId" data-align="center">序号</th>
+								<th data-field="stdCode" data-align="center">编码</th>
+								<th data-field="fileNo" data-width="90" data-align="center">标准文号</th>
+								<th data-field="fileName" data-align="center">文件名称</th>
+								<th data-field="kbstdtype" data-align="center">审计依据类型</th>
+								<th data-field="filetype" data-width="50" data-align="center">文件类型</th>
+								<th data-align="center" data-width="110" data-formatter="operatorBtn3">操作</th>
+							</tr>
+						</thead>
+				</table>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<div id="rowBtn_edit" style="display: none;">
+	<div class="hidden-sm hidden-xs action-buttons">
+		<a class="green" href="javascript:void(0);" 
+			title="编辑审计依据"
+			data-mode="page" data-title="编辑"
+			data-url="${ctxPath}/repository/kbstd/edit/showlayer"
+			data-data="{id:'{row.stdId}'}"
+			data-width="50%"
+			>
+			<i class="ace-icon fa fa-pencil midder-130"></i>
+		</a>
+	
+		<a class="red" href="javascript:void(0);" 
+			title="删除审计依据"
+			data-mode="del" data-title="删除操作"
+			data-msg="你确定删除该审计依据吗?(慎重操作)"
+			data-url="${ctxPath}/repository/kbstd/delete" data-data="{id:'{row.stdId}'}"
+			data-reloadurl="true"
+			>
+			<i class="ace-icon fa fa-trash-o midder-130"></i>
+		</a>
+	
+		<a class="black" href="javascript:void(0);" 
+			title="增加条目"
+			data-mode="page" data-title="增加条目"
+			data-url="${ctxPath}/repository/entry/add/showlayer" 
+			data-data="{id:'{row.stdId}'}"
+			data-width="50%"
+			data-reloadurl="true"
+			>
+			<i class="ace-icon fa fa-plus midder-130"></i>
+		</a>
+		<a class="grey" href="javascript:void(0);" 
+			title="浏览条目"
+			data-mode="detail" data-title="浏览条目"
+			data-url="${ctxPath}/repository/entry/detail/showlayer" data-data="{id:'{row.stdId}'}"
+			data-width="80%"
+			data-reloadurl="true"
+			>
+			<i class="ace-icon fa fa-ellipsis-h midder-130"></i>
+		</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+var setting = {
+		view:{
+			expandSpeed:100,
+			selectedMulti : false,
+			fontCss:function(treeId, treeNode) {
+				return (!!treeNode.highlight) ? {"font-weight":"bold","color":"red"} : {"font-weight":"normal","color":"#333"};
+			}
+		},
+		data : {
+			simpleData : {
+				enable : true,
+				idKey : "id",
+				pIdKey : "parentId"
+			}
+		},
+		callback: {
+			onClick: onClickNode,
+			beforeDrag: function(){return false;}
+		}
+	};
+	
+	
+	
+	//节点点击事件
+	function onClickNode(event, treeId, treeNode) {
+		if(treeNode.id == 1501 || treeNode.parentId == 1501){
+			loadData(treeNode.id,treeNode.parentId);
+		}
+		if(treeNode.id == 1503 ||  treeNode.parentId == 1503){
+			loadData1(treeNode.id,treeNode.parentId);
+		}
+		if(treeNode.id == 1401 || treeNode.parentId == 1401){
+			loadData2(treeNode.id,treeNode.parentId);
+		}
+	};
+	
+	var key = $("#search-input"),nodeList = [];
+	function searchNode(e) {
+		// 取得输入的关键字的值
+		var value = $.trim(key.get(0).value);
+		
+		// 按名字查询
+		var keyType = "name";
+		if (key.hasClass("empty")) {
+			value = "";
+		}
+		
+		// 如果要查空字串，就退出不查了。
+		if (value === "") {
+			return;
+		}
+		updateNodes(false);
+		nodeList = treeObj.getNodesByParamFuzzy(keyType, value);
+		var type = "";
+		var parentId = "";
+		$.each(nodeList,function(i,obj){
+			type = (type + obj.id) + (((i + 1)== nodeList.length) ? '':','); 
+			parentId = obj.parentId;
+		})
+		loadData(type,parentId);
+		updateNodes(true);
+	};
+	function updateNodes(highlight) {
+		for(var i=0, l=nodeList.length; i<l; i++) {
+			nodeList[i].highlight = highlight;				
+			treeObj.updateNode(nodeList[i]);
+			treeObj.expandNode(nodeList[i].getParentNode(), true, false, false);
+		}
+	};
+	
+	var treeObj;
+	$(function(){
+		//树结构初始化
+		nodeList=[]; //清除缓存
+		var treeData = ${treeList};
+		
+		$.fn.zTree.init($("#treeRepository"), setting,treeData);
+		treeObj = $.fn.zTree.getZTreeObj("treeRepository");
+		// 默认展开一级节点
+		var nodes = treeObj.getNodesByParam("level", 1);
+			for(var i=0; i<nodes.length; i++) {
+				treeObj.expandNode(nodes[i].getParentNode(), true, false, false, false);
+			}
+		
+		$("#search-all-btn").click(function(){
+			$("#search-form").find("input[name=id]").val("");
+			$("#search-form").find("input[name=name]").val("");
+			paging("search-form",1);
+			var node = treeObj.getNodeByParam("id", 0);
+			treeObj.selectNode(node,false);
+			if(undefined != nodeList) {
+				for(var i=0, l=nodeList.length; i<l; i++) {
+					nodeList[i].highlight = false;				
+					treeObj.updateNode(nodeList[i]);
+				}
+			}
+			loadData(1501);
+		}).trigger("click");
+		
+		$("#search-btn").click(function(e){
+			$("#search-form").find("input[name=id]").val("");
+			$("#search-form").val("");
+			var treeObj = $.fn.zTree.getZTreeObj("treeRepository");
+			treeObj.cancelSelectedNode();
+			paging("search-form",1);
+			searchNode(e);
+		});
+		
+	});
+
+$(function(){
+	var $table = $('#table');
+    $table.bootstrapTable({
+    	iconSize:'sm',
+		pagination:true,
+		method:"post",
+		pageSize:10,
+		queryParamsType:'limit',
+		striped:true,
+		pageNumber:1,
+		sidePagination:'server',
+		url:'${ctxPath!}/repository/kbstd/list'
+    });
+})
+
+function loadData(type,parentId){
+		if(type == 1501 || type == undefined){
+			$('#table').bootstrapTable("refresh",{url:"${ctxPath!}/repository/kbstd/list"})
+		}
+		$('#table').bootstrapTable("refresh",{url:"${ctxPath!}/repository/kbstd/list?type="+type+"&parentId="+parentId})
+	}
+	
+function operatorBtn3(value, row) {
+	return $("#rowBtn_edit").html()
+	.replace(new RegExp("{row.stdId}", "g"), row.stdId);
+}
+</script>

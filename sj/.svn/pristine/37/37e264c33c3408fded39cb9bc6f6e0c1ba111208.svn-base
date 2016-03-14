@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+		<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		<mapper namespace="com.krm.dbaudit.web.risk.mapper.DataDealModelMapper">
+
+	<sql id="dataDealColumns">
+		id, data_id, model_id, data_status, organ_id, organ_name, trandate, data_seq, reason, deal_escription, 
+		deal_type, deal_detail, relative, phoneormail, deal_time, deal_user, trantype
+	</sql>
+	
+
+	<insert id="dataDeal" useGeneratedKeys="false">
+		<selectKey resultType="java.lang.Long"  keyProperty="id" order="BEFORE">
+		select model_data_deal_seq.nextval as id from dual
+		</selectKey>
+		insert into model_data_deal (<include refid="dataDealColumns" />)
+		values (
+		#{id},
+		#{dataId,jdbcType=INTEGER},
+		#{modelId,jdbcType=INTEGER},
+		#{dataStatus,jdbcType=INTEGER},
+		#{organId,jdbcType=VARCHAR},
+		#{organName,jdbcType=VARCHAR},
+		#{tranDate,jdbcType=VARCHAR},
+		#{dataSeq,jdbcType=VARCHAR},
+		#{reason,jdbcType=VARCHAR},
+		#{dealEscription,jdbcType=VARCHAR},
+		#{dealTtpe,jdbcType=VARCHAR},
+		#{dealDetail,jdbcType=VARCHAR},
+		#{relative,jdbcType=VARCHAR},
+		#{phoneOrMail,jdbcType=VARCHAR},
+		#{dealUser,jdbcType=VARCHAR},
+		#{dealTime,jdbcType=VARCHAR},
+		#{tranType,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<select id="findById" resultType="com.krm.dbaudit.web.risk.model.DataDealModel">
+		select <include refid="dataDealColumns" />
+		from model_data_deal
+		<where>
+			data_id = #{id} 
+		</where>
+	</select>
+	
+</mapper>

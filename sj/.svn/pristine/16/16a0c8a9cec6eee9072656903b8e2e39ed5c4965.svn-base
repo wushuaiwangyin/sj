@@ -1,0 +1,100 @@
+package com.krm.dbaudit.web.risk.service;
+
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.parser.SqlServer;
+import com.krm.dbaudit.web.risk.mapper.DataNoticeModelMapper;
+import com.krm.dbaudit.web.risk.model.DataNoticeModel;
+import com.krm.dbaudit.web.risk.tabelMapper.QueryDetailInfoDao;
+
+
+@Service("dataNoticeService")
+public class DataNoticeService
+{
+	@Resource
+	private DataNoticeModelMapper dataNoticeModelMapper;
+	
+	
+	@Resource
+	private QueryDetailInfoDao queryDetailInfoDao;
+	
+	public QueryDetailInfoDao getQueryDetailInfoDao()
+	{
+		return queryDetailInfoDao;
+	}
+
+	public void setQueryDetailInfoDao(QueryDetailInfoDao queryDetailInfoDao)
+	{
+		this.queryDetailInfoDao = queryDetailInfoDao;
+	}
+
+	public static final SqlServer sqlServer = new SqlServer();
+	/**
+	 * 查询表头
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> queryHeaders(Map<String, Object> params){
+		return queryDetailInfoDao.queryHeaders(params);
+	}
+	
+	
+	/**
+	 * 查询表数据
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> queryContents(Map<String, Object> params){
+		return queryDetailInfoDao.queryContents(params);
+	}
+	
+	
+	public PageInfo<Map<String, Object>> findPageInfo(Map<String, Object> params){
+//		PageHelper.startPage(params);
+		Page<Map<String, Object>> page = queryDetailInfoDao.findPageInfo(params);
+		PageInfo<Map<String, Object>> pageInfo = new PageInfo<Map<String,Object>>(page);
+		return pageInfo;
+	}
+	
+	/**
+	 * 下发通知前查询是否已下发
+	 * @param id
+	 * @return
+	 */
+	public DataNoticeModel findById(Integer id){
+		return dataNoticeModelMapper.findById(id);
+	}
+	
+	
+	/**
+	 * 下发通知
+	 * @param params
+	 * @return
+	 */
+	public int SendNotice(Map<String, Object> params){
+		return dataNoticeModelMapper.sendNotice(params);
+	}
+
+	/**
+	 * 下发通知成功后更改源数据状态
+	 * @param dataId
+	 * @param status
+	 * @return
+	 */
+	public int updateStatus(Integer dataId, Integer status){
+		return queryDetailInfoDao.updateNoticeStatus(dataId, status);
+	}
+	
+	public void saveFile(Map<String, Object> params){
+		dataNoticeModelMapper.saveFile(params);
+	}
+}

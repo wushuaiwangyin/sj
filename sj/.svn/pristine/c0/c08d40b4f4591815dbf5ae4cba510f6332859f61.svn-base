@@ -1,0 +1,408 @@
+package com.krm.dbaudit.web.risk.controller;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
+import com.krm.dbaudit.common.excel.ExcelUtils;
+import com.krm.dbaudit.common.excel.template.utils.PoiUtil;
+import com.krm.dbaudit.common.utils.DateUtils;
+import com.krm.dbaudit.common.utils.FileUtils;
+import com.krm.dbaudit.web.risk.model.DataDealModel;
+import com.krm.dbaudit.web.risk.model.DataNoticeModel;
+import com.krm.dbaudit.web.risk.service.DataDealService;
+import com.krm.dbaudit.web.risk.service.DataNoticeService;
+import com.krm.dbaudit.web.risk.service.RiskDetectionService;
+import com.krm.dbaudit.web.util.ResponseUtils;
+
+/**
+ * 模型数据处理
+ * @author Parker
+ *
+ */
+@Controller
+@RequestMapping("data")
+public class DataController
+{
+	@Resource
+	private DataNoticeService dataNoticeService;
+	
+	@Resource
+	private DataDealService dataDealService;
+	
+	@Resource
+	private RiskDetectionService riskDetectionService;
+	/**
+	 * 下发通知，获取数据id并跳转
+	 * @param params
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="deal", method=RequestMethod.POST)
+	public String deal(@RequestParam Map<String, Object> params,  Model model){
+		String dataId = (String) params.get("dataId");
+		String modelId = (String) params.get("modelId");
+		String noticeTime = DateUtils.getDate("yyyy-MM-dd HH:mm:ss");
+		model.addAttribute("dataId", dataId );
+		model.addAttribute("modelId", modelId );
+		model.addAttribute("noticeTime", noticeTime);
+		return "risk/deal";
+	}
+	
+	/**
+	 * 非现场核实，获取数据id并跳转
+	 * @param params
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="deal1", method=RequestMethod.POST)
+	public String deal1(@RequestParam Map<String, Object> params,  Model model){
+		String dataId = (String) params.get("dataId");
+		String modelId = (String) params.get("modelId");
+		String organId = (String) params.get("organId");
+		String dataDate = (String) params.get("dataDate");
+		model.addAttribute("dataId", dataId );
+		model.addAttribute("modelId", modelId );
+		model.addAttribute("organId", organId );
+		model.addAttribute("dataDate", dataDate );
+		model.addAttribute("dealType", "2");	//非现场核实代号2
+		return "risk/deal1";
+	}
+	
+	
+	/**
+	 * 现场核实，获取数据id并跳转
+	 * @param params
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="deal2", method=RequestMethod.POST)
+	public String deal2(@RequestParam Map<String, Object> params,  Model model){
+		String dataId = (String) params.get("dataId");
+		String modelId = (String) params.get("modelId");
+		String organId = (String) params.get("organId");
+		String dataDate = (String) params.get("dataDate");
+		model.addAttribute("dataId", dataId );
+		model.addAttribute("modelId", modelId );
+		model.addAttribute("organId", organId );
+		model.addAttribute("dataDate", dataDate );
+		model.addAttribute("dealType", "1");	//现场核实代号1
+		return "risk/deal1";
+	}
+	
+	/**
+	 * 下发通知
+	* @param params
+	 */
+	@RequestMapping(value = "sendNotice",method=RequestMethod.POST)  
+    public @ResponseBody Integer  sendNotice(@RequestParam Map<String, Object> params, 
+    		@RequestParam(value = "file", required = false) MultipartFile file, HttpServletRequest request, ModelMap model) {
+	 	Map<String,Object> dataFile = new HashMap<String, Object>();
+	 	Integer dataId = Integer.parseInt(params.get("dataId").toString());
+		DataNoticeModel dataNoticeModel = dataNoticeService.findById(dataId);
+		InputStream is=null;
+		if(dataNoticeModel == null){
+			if(file != null){
+		        try
+				{
+		        	String fileName = FileUtils.getFileNameNoSuffix(file.getOriginalFilename()); 
+					is = file.getInputStream();
+					byte[] data = new byte[(int) file.getSize()];  
+					is.read(data);
+					dataFile.put("dataId", dataId);
+					dataFile.put("fileName", fileName);
+					dataFile.put("fileContent", data);
+					dataNoticeService.saveFile(dataFile);
+				} catch (IOException e)
+				{
+					return -1;
+				}
+			}
+		        params.put("dataStatus", 2);
+		        int count1 =  dataNoticeService.SendNotice(params);
+		        if(count1 > 0){
+					int count2 = dataNoticeService.updateStatus(dataId, 2);
+					if(count2 > 0){
+						return count1;
+					}
+				}else {
+					return -1; //下发失败，返回-1
+				}
+			}
+				return 0; //已下发，返回0
+    }  
+	
+	/**
+	 * 现场核实/非现场核实
+	 * @param params
+	 */
+	@RequestMapping(value="dataDeal",method=RequestMethod.POST)
+	public @ResponseBody Integer dataDeal(@RequestParam Map<String, Object> params, 
+    		@RequestParam(value = "file", required = false) MultipartFile file, HttpServletRequest request, ModelMap model){
+		Map<String,Object> dataFile = new HashMap<String, Object>();
+	 	Integer dataId = Integer.parseInt(params.get("dataId").toString());
+	 	DataDealModel dataDealModel = dataDealService.findById(dataId);
+		InputStream is=null;
+		if(dataDealModel == null){
+			if(file != null){
+				try
+				{
+					String fileName = FileUtils.getFileNameNoSuffix(file.getOriginalFilename()); 
+					is = file.getInputStream();
+					byte[] data = new byte[(int) file.getSize()];  
+					is.read(data);
+					dataFile.put("dataId", dataId);
+					dataFile.put("fileName", fileName);
+					dataFile.put("fileContent", data);
+					dataNoticeService.saveFile(dataFile);	//下发和核实保存文件同一个方法
+				} catch (IOException e)
+				{
+					return -1;
+				}
+			}
+	        params.put("dataStatus", 2);
+	        int count1 =  dataDealService.dataDeal(params);
+	        if(count1 > 0){
+	        	int count2 = dataDealService.updateStatus(dataId, 2);
+				if(count2 > 0){
+					return count1;
+				}
+			}return -1; //核实失败，返回-1
+		}else{
+			return 0;	//已核实，返回0
+		}
+	}
+	
+	
+	 
+	
+	
+	/**
+	 * 查询表头
+	 * @param params
+	 * @param model
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value="queryHeaders",method = RequestMethod.POST)
+	public String queryHeaders(@RequestParam  Map<String, Object> params, Model model,
+			HttpServletResponse response){
+		List<Map<String, Object>> headerList = dataNoticeService.queryHeaders(params);
+		model.addAttribute("headerList",headerList)
+			 .addAttribute("modelId", params.get("modelId"))
+			 .addAttribute("organId", params.get("organId"))
+			 .addAttribute("custNo", params.get("custNo"))
+			 .addAttribute("dealStatus", params.get("dealStatus"));
+		return "risk/detail";
+	}
+	
+	/**
+	 * 查询数据
+	 * @param params
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value="queryContents",method = RequestMethod.POST)
+	public void queryContents(@RequestParam  Map<String, Object> params, 
+			HttpServletResponse response) throws Exception{
+		PageInfo<Map<String,Object>> page = dataNoticeService.findPageInfo(params);
+		ResponseUtils.renderJson(response, page);
+	}
+	
+	
+	/**
+	 * 查询详细数据左列
+	 * @param params
+	 * @param model
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value="queryDetailsHeaders",method = RequestMethod.POST)
+	public String queryDetailsHeaders(@RequestParam  Map<String, Object> params, Model model,
+			HttpServletResponse response){
+//		Map<String, Object> newParams = new HashMap<String, Object>();
+//		newParams.put("modelId", params.get("模型编号"));
+//		List<Map<String, Object>> headerList = dataNoticeService.queryHeaders(newParams);
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		Map<String,Object> map = null;
+		Set<String> keySet = params.keySet();
+		for (Object string : keySet)
+		{
+			map = new HashMap<String, Object>();
+			map.put("key", string);	map.put("value", params.get(string));
+			list.add(map);
+		}
+		model.addAttribute("headerList",list);
+		return "risk/detail2";
+	}
+	
+//	/**
+//	 * 查询详细数据右列
+//	 * @param params
+//	 * @param response
+//	 */
+//	@RequestMapping(value="queryDetailsContents",method = RequestMethod.POST)
+//	public void queryDetailsContents(@RequestParam  Map<String, Object> params,
+//			HttpServletResponse response){
+//		List<Map<String, Object>> dataList = dataNoticeService.queryContents(params);
+//		List<Map<String, Object>> headerList = new ArrayList<Map<String,Object>>();
+//		Map<String,Object> map = null;
+//		Set<String> keySet = params.keySet();
+//		for (String string : keySet)
+//		{
+//			map = new HashMap<String, Object>();
+//			map.put("key", string);	map.put("value", params.get(string));
+//			headerList.add(map);
+//		}
+//		model.addAttribute("headerList",headerList);
+//		ResponseUtils.renderJson(response, list);
+//	}
+	
+	
+	
+	/**
+	 * 导出execl 
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "export",method = RequestMethod.POST)
+	public void exportFile(@RequestParam Map<String, Object> params,HttpServletRequest request,
+			HttpServletResponse response) throws Exception{
+		String filePath = request.getSession().getServletContext().getRealPath("/")+"WEB-INF";
+		Map<String, Object> map = null;
+		String custNo = null;
+		if(params.containsKey("custNo")){
+			custNo = params.get("custNo").toString();
+		}
+		if(params.containsKey("id")){
+			String array [] = params.get("id").toString().split(",");
+			
+			List<File> files = new ArrayList<File>();
+			for (int i = 0; i < array.length; i++)
+			{
+				map = new HashMap<String, Object>();
+				map.put("modelId", array[i]);
+				if(custNo != null && custNo.length() != 0){
+					map.put("custNo", custNo);
+				}
+				files.add(generateFile(map, request, response));
+			}
+			FileUtils.downLoadFiles(filePath+"\\模型数据文件.zip", files,  response);
+		}else{
+			this.downloadFile(params, response);
+		}
+		
+	}
+	
+	/**
+	 * 生成临时文件
+	 * @param params
+	 * @param response
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 */
+	public File generateFile(Map<String, Object> params,HttpServletRequest request, HttpServletResponse response) 
+			throws Exception{
+		String filePath = request.getSession().getServletContext().getRealPath("/")+"WEB-INF";
+		String modelName = null;
+		modelName = riskDetectionService.findById(Long.parseLong(params.get("modelId").toString())).getName();
+		List<Map<String, Object>> headerList = dataNoticeService.queryHeaders(params);//表头
+		List<Map<String, Object>> dataList = dataNoticeService.queryContents(params);//数据
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		Map<String, String> titleMap = Maps.newLinkedHashMap();
+		
+		if(headerList.size() != 1){
+			if(dataList.size() != 0){
+				titleMap.put("通知状态","noticeStatus");   titleMap.put("处理状态","dealStatus");
+				titleMap.put("数据编号","dataId");     titleMap.put("模型编号","modelId");   
+				titleMap.put("会计日期","dataDate");   titleMap.put("机构编号","organId");
+				titleMap.put("客户号", "custNo");
+				for (int i = 1; i < headerList.size(); i++)
+				{
+					headerMap = headerList.get(i);
+					titleMap.put(headerMap.get("fields").toString(),headerMap.get("itemvalues").toString());
+				}
+			}else{
+				headerList.removeAll(dataList);
+				headerMap.put("温馨提示：无相关数据！", "");
+				dataList.add(headerMap);
+				titleMap.put("温馨提示：无相关数据！", "");
+			}
+		}else{
+			titleMap.put("温馨提示：", "无相关数据！！！");
+		}
+		try {
+			File file = new File(filePath+"\\"+modelName+".xls");
+			FileOutputStream fos = new FileOutputStream(file);
+			PoiUtil.writeMyExcel(dataList, fos, titleMap);
+			fos.close();
+			return file;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * 下载单个文件
+	 * @param params
+	 * @param response
+	 */
+	public void downloadFile(Map<String, Object> params,HttpServletResponse response){
+		String modelName = null;
+		modelName = riskDetectionService.findById(Long.parseLong(params.get("modelId").toString())).getName();
+		List<Map<String, Object>> headerList = dataNoticeService.queryHeaders(params);//表头
+		List<Map<String, Object>> dataList = dataNoticeService.queryContents(params);//数据
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		Map<String, String> titleMap = Maps.newLinkedHashMap();
+		
+		if(headerList.size() != 1){
+			if(dataList.size() != 0){
+				titleMap.put("通知状态","noticeStatus");   titleMap.put("处理状态","dealStatus");
+				titleMap.put("数据编号","dataId");     titleMap.put("模型编号","modelId");   
+				titleMap.put("会计日期","dataDate");   titleMap.put("机构编号","organId");
+				titleMap.put("客户号", "custNo");
+				for (int i = 1; i < headerList.size(); i++)
+				{
+					headerMap = headerList.get(i);
+					titleMap.put(headerMap.get("fields").toString(),headerMap.get("itemvalues").toString());
+				}
+			}else{
+				headerList.removeAll(dataList);
+				headerMap.put("温馨提示：无相关数据！", "");
+				dataList.add(headerMap);
+				titleMap.put("温馨提示：无相关数据！", "");
+			}
+		}else{
+			titleMap.put("温馨提示：", "无相关数据！！！");
+		}
+		try {
+			//流的方式直接下载
+			ExcelUtils.exportMyExcel(response, modelName+".xls", dataList, titleMap);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

@@ -1,0 +1,216 @@
+package com.krm.dbaudit.web.risk.model;
+
+import java.util.Date;
+
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.krm.dbaudit.common.base.BaseEntity;
+
+@Table(name="model_data_notice")
+public class DataNoticeModel extends BaseEntity
+{
+	@Id
+	@SequenceGenerator(name="Any",sequenceName="model_data_notice_seq")
+	private Long id;				//主键
+	private Integer dataId;			//数据id
+	private Integer modelId;		//模型id
+	private Integer dataStatus;		//数据状态
+	private String noticeStatus;	//通知书状态
+	private String noticeorganId;		//通知机构id
+	private String noticeorganName;		//通知机构名称
+	private String bnoticeorganId;		//交易机构id
+	private String bnoticeorganName;		//交易机构名称
+	private String noticestarttime;		//通知书下发时间
+	private String noticecolsetime;		//通知书截止时间
+	private String noticeendtime;		//通知书完成时间
+	private String noticedealrequire;		//通知书处理要求-省级要求
+	private String noticedealrequire2;		//通知书处理要求-办事处要求2
+	private String trandate;		//预警时间
+	private String noticesender;		//通知书下发者
+	private String noticedealer;		//通知书处理者--办事处
+	private String noticesender2;		//通知书下发者
+	private String noticedealer2;		//通知书处理者--支行分社
+	private String noticeorganId2;		//被通知机构id
+	private String noticeorganName2;		//被通知机构名称
+
+	
+	public void setId(Long id){
+		this.set("id",id);
+	}
+
+	public Long getId(){
+		return this.getLong("id");
+	}
+	
+	public void setDataId(Integer dataId){
+		this.set("dataId",dataId);
+	}
+
+	public Integer getDataId(){
+		return this.getInteger("dataId");
+	}
+	
+	
+	public void setModelId(Integer modelId){
+		this.set("modelId",modelId);
+	}
+
+	public Integer getModelId(){
+		return this.getInteger("modelId");
+	}
+	
+	public void setDataStatus(Integer dataStatus){
+		this.set("dataStatus",dataStatus);
+	}
+
+	public Integer getDataStatus(){
+		return this.getInteger("dataStatus");
+	}
+	
+	
+	public void setNoticeStatus(String noticeStatus){
+		this.set("noticeStatus",noticeStatus);
+	}
+
+	public String getNoticeStatus(){
+		return this.getString("noticeStatus");
+	}
+	
+	public void setNoticeorganId(String noticeorganId){
+		this.set("noticeorganId",noticeorganId);
+	}
+
+	public String getNoticeorganId(){
+		return this.getString("noticeorganId");
+	}
+	
+	public void setNoticeorganName(String noticeorganName){
+		this.set("noticeorganName",noticeorganName);
+	}
+
+	public String getNoticeorganName(){
+		return this.getString("noticeorganName");
+	}
+	
+	public void setBnoticeorganId(String bnoticeorganId){
+		this.set("bnoticeorganId",bnoticeorganId);
+	}
+
+	public String getBnoticeorganId(){
+		return this.getString("bnoticeorganId");
+	}
+	
+	public void setBnoticeorganName(String bnoticeorganName){
+		this.set("bnoticeorganName",bnoticeorganName);
+	}
+
+	public String getBnoticeorganName(){
+		return this.getString("bnoticeorganName");
+	}
+	
+	public void setNoticestarttime(String noticestarttime){
+		this.set("noticestarttime",noticestarttime);
+	}
+
+	public String getNoticestarttime(){
+		return this.getString("noticestarttime");
+	}
+	
+	
+	public void setNoticecolsetime(String noticecolsetime){
+		this.set("noticecolsetime",noticecolsetime);
+	}
+
+	public String getNoticecolsetime(){
+		return this.getString("noticecolsetime");
+	}
+	
+	
+	public void setNoticeendtime(String noticeendtime){
+		this.set("noticeendtime",noticeendtime);
+	}
+
+	public String getNoticeendtime(){
+		return this.getString("noticeendtime");
+	}
+	
+	
+	public void setNoticedealrequire(String noticedealrequire){
+		this.set("noticedealrequire",noticedealrequire);
+	}
+
+	public String getNoticedealrequire(){
+		return this.getString("noticedealrequire");
+	}
+	
+	public void setNoticedealrequire2(String noticedealrequire2){
+		this.set("noticedealrequire2",noticedealrequire2);
+	}
+
+	public String getNoticedealrequire2(){
+		return this.getString("noticedealrequire2");
+	}
+	
+	
+	public void setTrandate(String trandate){
+		this.set("trandate",trandate);
+	}
+
+	public String getTrandate(){
+		return this.getString("trandate");
+	}
+	
+	public void setNoticesender(String noticesender){
+		this.set("noticesender",noticesender);
+	}
+
+	public String getNoticesender(){
+		return this.getString("noticesender");
+	}
+	
+	public void setNoticedealer(String noticedealer){
+		this.set("noticedealer",noticedealer);
+	}
+
+	public String getNoticedealer(){
+		return this.getString("noticedealer");
+	}
+	
+	
+	public void setNoticesender2(String noticesender2){
+		this.set("noticesender2",noticesender2);
+	}
+
+	public String getNoticesender2(){
+		return this.getString("noticesender2");
+	}
+	
+	public void setNoticedealer2(String noticedealer2){
+		this.set("noticedealer2",noticedealer2);
+	}
+
+	public String getNoticedealer2(){
+		return this.getString("noticedealer2");
+	}
+	
+	public void setNoticeorganId2(String noticeorganId2){
+		this.set("noticeorganId2",noticeorganId2);
+	}
+
+	public String getNoticeorganId2(){
+		return this.getString("noticeorganId2");
+	}
+	
+	
+	public void setNoticeorganName2(String noticeorganName2){
+		this.set("noticeorganName2",noticeorganName2);
+	}
+
+	public String getNoticeorganName2(){
+		return this.getString("noticeorganName2");
+	}
+	
+	
+}

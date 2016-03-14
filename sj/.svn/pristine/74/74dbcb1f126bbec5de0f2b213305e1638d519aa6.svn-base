@@ -1,0 +1,51 @@
+#database configuration
+connection.url=jdbc\:oracle\:thin\:@192.168.2.10\:1521\:orcl
+#connection.url=jdbc\:oracle\:thin\:@127.0.0.1\:1521\:orcl
+connection.driverClassName=oracle.jdbc.driver.OracleDriver
+connection.username=SLSUSER
+connection.password=SLSUSER
+
+#connection.url=jdbc:mysql://10.4.26.93:3306/de3b781a3ee034eb58c9090d33fb1c89c?useUnicode=true&characterEncoding=utf8
+#connection.username=uJn5A39jfvBIS
+#connection.password=
+#druid
+druid.initialSize=10
+druid.minIdle=10
+druid.maxActive=50
+druid.maxWait=60000
+druid.timeBetweenEvictionRunsMillis=60000
+druid.minEvictableIdleTimeMillis=300000
+druid.validationQuery=SELECT 1 FROM DUAL
+druid.testWhileIdle=true
+druid.testOnBorrow=false
+druid.testOnReturn=false
+druid.poolPreparedStatements=true
+druid.maxPoolPreparedStatementPerConnectionSize=20
+druid.filters=wall,stat
+
+download.rootPath=C:/apache-tomcat-6.0.41/file
+upload.rootPath=
+
+
+externaldata.url=jdbc\:oracle\:thin\:@219.142.180.32\:1521\:orcl
+externaldata.driverClassName=oracle.jdbc.driver.OracleDriver
+externaldata.username=auditdb
+externaldata.password=auditdb
+externaldata.initialSize=10
+externaldata.minIdle=10
+externaldata.maxActive=50
+externaldata.maxWait=60000
+externaldata.timeBetweenEvictionRunsMillis=60000
+externaldata.minEvictableIdleTimeMillis=300000
+externaldata.validationQuery=SELECT 1 FROM DUAL
+externaldata.testWhileIdle=true
+externaldata.testOnBorrow=false
+externaldata.testOnReturn=false
+externaldata.poolPreparedStatements=true
+externaldata.maxPoolPreparedStatementPerConnectionSize=20
+externaldata.filters=wall,stat
+
+#model type id config
+model.audit.type.config=2,3,5
+
+

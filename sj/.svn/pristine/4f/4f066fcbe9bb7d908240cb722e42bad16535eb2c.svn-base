@@ -1,0 +1,29 @@
+<div class="layer">
+    <div class="profile-user-info profile-user-info-striped wordbreak" >
+         	@for(headerMap in headerList){
+         		
+	         		<div class="profile-info-row">
+			            <div class="profile-info-name">${headerMap.key!}</div>
+			            <div class="profile-info-value" id='${headerMap.fields!}'>${headerMap.value!}</div>
+			        </div>
+        @}
+        
+       
+    </div>
+</div>
+
+<script>
+
+$.ajax({
+    url: "",
+    dataType: "json",
+    type : 'post',
+    async: false,
+    success: function (data) {
+        $.each(data,function(i,obj){
+        	//alert(row.数据编号);
+            $("#"+obj.key).text(obj.value);
+        })
+    }
+})
+</script>

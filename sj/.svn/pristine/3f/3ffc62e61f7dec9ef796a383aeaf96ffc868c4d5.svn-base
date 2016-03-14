@@ -1,0 +1,17 @@
+package com.krm.dbaudit.web.risk.mapper;
+
+
+import java.util.Map;
+
+import com.krm.dbaudit.web.risk.model.DataNoticeModel;
+
+
+public interface DataNoticeModelMapper
+{
+	public int sendNotice(Map<String, Object> params);
+	
+	public DataNoticeModel findById(Integer id);
+	
+	public void saveFile(Map<String, Object> params);
+}
+

@@ -1,0 +1,94 @@
+<div class="layer">
+    <div class="alert-success">提示信息：双击表格行可查询详细信息</div>
+    <div class="widget-main padding-8">
+        <table id="table-detail_info"  data-height="500"   data-pagination="true"
+               data-search="false"  data-page-list="[10, 20, 50, 100, 200]"   data-page-size="10" data-striped="true" 
+                data-toolbar="#toolbar" data-smart-display="true">
+            <thead>
+              <tr>
+					<th data-field="modelId" data-sortable="true">模型编号</th>
+					<!-- <th data-field="modelName" data-sortable="true">模型名称</th> -->
+					<th data-field="tabName" data-sortable="true">物理表名</th>
+					<th data-field="colName" data-sortable="true">列名称</th>
+					<th data-field="alise" data-sortable="true">列中文名称</th>
+					<th data-field="id" data-sortable="false" data-width="200" data-formatter="operatorBtn">操作</th>
+				</tr>
+            </thead>
+        </table>
+    </div>
+<div id="toolbar">
+<div class="widget-toolbar no-border width-80" style="padding-top: 2px;">
+			<form method="post" class="form-search" target="list-page"
+						  action="">
+	<div class="input-group" style="line-height: 0px;">
+	<!-- <input type="button" class="btn btn-primary btn-sm" name="add_table" id="add_table"  value="添加物理表" /> 
+	<input type="button" class="btn btn-primary btn-sm" name="add_cols" id="add_cols"  value="添加物理列" />-->
+	
+	<a class="btn btn-purple btn-minier" href="javascript:void(0);"
+               data-mode="page" data-title="添加物理表信息"
+               data-url="${ctxPath}/cust360/model/manage/add/table/showLayer"
+               data-width="80%"
+               data-table="table" >添加物理表 </a>
+	</div>
+			</form>
+</div>
+</div>
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+
+
+
+$(function(){
+	
+	var $table_detail = $('#table-detail_info');
+    $table_detail.bootstrapTable({
+        iconSize:'sm',
+		pagination:true,
+		method:"post",
+		toolbar:"#toolbar",
+		pageSize:10,
+		queryParamsType:'limit',
+		striped:true,
+		pageNumber:1,
+		sidePagination:'server',
+		url:'${ctxPath}/cust360/main/list?modelId='+${modelId!}
+    });
+    
+})
+/*   
+$("#add_table").click(function(){
+    	
+    }) */
+
+/*     function operatorBtn1(value, row){
+        return $("#rowBtn_edit1").html().replace(new RegExp("{row.id}","g"),row.id);
+    }
+
+    $("#column-select").chosen({width: "150px", search_contains: true, disable_search_threshold: 10});
+    $("#operator-select").chosen({width: "150px", search_contains: true, disable_search_threshold: 10});
+
+
+    function cardFormatter(value,row,index){
+        return ' <a  href="javascript:void(0);"'+
+                ' data-mode="page" data-title="'+row.cname+'    详细"'+
+                ' data-url="./view/query/360/result-index.html" '+
+                ' data-width="80%" data-height="100%" '+
+                ' data-data="{id:'+row.id+'}" >'+
+                value +
+                '</a>';
+
+    }
+
+    function nameFormatter(value, row) {
+    } */
+
+</script>

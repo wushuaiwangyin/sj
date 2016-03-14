@@ -1,0 +1,198 @@
+<div class="layer">
+    <div class="alert-success">提示信息：双击表格行可查询详细信息</div>
+    <div class="widget-main padding-8">
+        <table id="table-detail_info" data-url="${ctxPath}/cust360/main/list?modelId=${modelId!}" data-height="500"   data-pagination="true"
+               data-search="false"  data-page-list="[10, 20, 50, 100, 200]"   data-page-size="10" data-striped="true"
+               table-condensed="true"
+               data-toolbar="#toolbar1"
+               data-smart-display="true">
+            <thead>
+              <tr>
+					<th data-field="modelId" data-sortable="true">模型编号</th>
+					<!-- <th data-field="modelName" data-sortable="true">模型名称</th> -->
+					<th data-field="tabName" data-sortable="true">物理表名</th>
+					<th data-field="colName" data-sortable="true">列名称</th>
+					<th data-field="alise" data-sortable="true">列中文名称</th>
+					<th data-field="id" data-sortable="false" data-width="200" data-formatter="operatorBtn">操作</th>
+				</tr>
+            </thead>
+        </table>
+    </div>
+
+
+</div>
+
+<div id="toolbar1">
+    <div class="form-inline" role="form">
+        <div class="form-group">
+            <span>字段</span>
+                <select name="property"  class="chosen-select form-control w70" id="column-select" >
+                <option value="calcDate">会计日期</option>
+                <option value="lendNo">借据编号</option>
+                <option value="contractNo">合同编号</option>
+                <option value="orgNo">机构代号</option>
+                <option value="cardType">客户证件类型</option>
+                <option value="card" >客户证件号码</option>
+                <option value="cname">客户名称</option>
+                <option value="lendDate">借款日期</option>
+                <option value="endDate">到期日期</option>
+                <option value="lendMoney">借款金额</option>
+                <option value="accountMonney">帐户余额</option>
+                <option value="rate">利率</option>
+                <option value="fRate">罚息利率</option>
+                <option value="lastDate">最后抵帐日期</option>
+                <option value="typeCons">四级分类结构</option>
+                <option value="subject">会计科目</option>
+                <option value="remark">备注</option>
+                <option value="riqi">RIQI</option>
+                <option value="orgName">机构全称</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <select name="property"  class="chosen-select form-control w70" id="operator-select" >
+                <option value="等于" selected="">等于</option>
+                <option value="大于">大于</option>
+                <option value="小于">小于</option>
+                <option value="大于等于">大于等于</option>
+                <option value="小于登记">小于登记</option>
+                <option value="区间">区间</option>
+                <option value="包含">包含</option>
+                <option value="不包含">不包含</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input name="property" class="form-control w70" type="text" >
+        </div>
+        <button id="ok" type="button" class="btn btn-primary btn-sm">查询</button>
+
+
+
+        <div class="form-group">
+            <div class="hidden-sm hidden-xs action-buttons">
+                <div class="inline dropdown-hover">
+                    <button class="btn btn-success btn-sm" title="处理" >
+                        处理选中记录
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-left dropdown-145 dropdown-lighter dropdown-close dropdown-caret">
+                        <li>
+                            <a class="blue" href="javascript:void(0);" title="下发通知"
+                               data-mode="page" data-title="下发通知"
+                               data-url="${ctxPath}/risk/deal"
+                               data-width="50%"
+                               data-data="{id:'{row.id}'}"
+                                    >
+                                <i class="ace-icon fa fa-caret-right bigger-110"></i>下发通知
+                            </a>
+                        </li>
+                        <li>
+                            <a class="blue" href="javascript:void(0);" title="非现场核实"
+                               data-mode="page" data-title="非现场核实"
+                               data-url="${ctxPath}/risk/deal1"
+                               data-width="50%"
+                               data-data="{id:'{row.id}'}"
+                                    >
+                                <i class="ace-icon fa fa-caret-right bigger-110"></i>非现场核实
+                            </a>
+                        </li>
+                        <li>
+                            <a class="blue" href="javascript:void(0);" title="现场核实"
+                               data-mode="page" data-title="非现场核实"
+                               data-url="${ctxPath}/risk/deal1"
+                               data-width="50%"
+                               data-data="{id:'{row.id}'}"
+                                    >
+                                <i class="ace-icon fa fa-caret-right bigger-110"></i>现场核实
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+             </div>
+        </div>
+
+        <div class="form-group">
+            <div class="hidden-sm hidden-xs action-buttons">
+                <div class="inline dropdown-hover">
+                    <button class="btn btn-danger btn-sm" title="全部处理" >
+                        全部处理
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-left dropdown-145 dropdown-lighter dropdown-close dropdown-caret">
+                        <li>
+                            <a class="blue" href="javascript:void(0);" title="下发通知"
+                               data-mode="page" data-title="下发通知"
+                               data-url="${ctxPath}/risk/deal"
+                               data-width="50%"
+                               data-data="{id:'{row.id}'}"
+                                    >
+                                <i class="ace-icon fa fa-caret-right bigger-110"></i>下发通知
+                            </a>
+                        </li>
+                        <li>
+                            <a class="blue" href="javascript:void(0);" title="非现场核实"
+                               data-mode="page" data-title="非现场核实"
+                               data-url="${ctxPath}/risk/deal"
+                               data-width="50%"
+                               data-data="{id:'{row.id}'}"
+                                    >
+                                <i class="ace-icon fa fa-caret-right bigger-110"></i>非现场核实
+                            </a>
+                        </li>
+                        <li>
+                            <a class="blue" href="javascript:void(0);" title="现场核实"
+                               data-mode="page" data-title="非现场核实"
+                               data-url="${ctxPath}/risk/deal"
+                               data-width="50%"
+                               data-data="{id:'{row.id}'}"
+                                    >
+                                <i class="ace-icon fa fa-caret-right bigger-110"></i>现场核实
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-purple btn-sm"
+                onclick="Angel.downloadFile('search-form','${ctxPath}/area/export')">
+            <i class="ace-icon fa fa-cloud-download bigger-130"></i>
+            导出Excel
+        </button>
+
+    </div>
+</div>
+
+
+
+
+
+<script>
+    var $table_detail = $('#table-detail_info');
+    $table_detail.bootstrapTable({
+        iconSize:'sm',
+        onDblClickRow:function(){
+            $.cuslayer({mode:"page",url:"${ctxPath}/cust360/main/list?modelId=${modelId!}",width:'50%',title:'详细信息'});
+        },
+        onLoadSuccess:tableLoadSuccess
+    });
+    function operatorBtn1(value, row){
+        return $("#rowBtn_edit1").html().replace(new RegExp("{row.id}","g"),row.id);
+    }
+
+    $("#column-select").chosen({width: "150px", search_contains: true, disable_search_threshold: 10});
+    $("#operator-select").chosen({width: "150px", search_contains: true, disable_search_threshold: 10});
+
+
+    function cardFormatter(value,row,index){
+        return ' <a  href="javascript:void(0);"'+
+                ' data-mode="page" data-title="'+row.cname+'    详细"'+
+                ' data-url="./view/query/360/result-index.html" '+
+                ' data-width="80%" data-height="100%" '+
+                ' data-data="{id:'+row.id+'}" >'+
+                value +
+                '</a>';
+
+    }
+
+    function nameFormatter(value, row) {
+    }
+
+</script>

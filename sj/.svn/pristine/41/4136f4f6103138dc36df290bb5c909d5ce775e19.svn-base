@@ -1,0 +1,345 @@
+package com.krm.dbaudit.web.sys.controller;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
+import com.krm.dbaudit.common.base.BaseController;
+import com.krm.dbaudit.common.utils.FileUtils;
+import com.krm.dbaudit.web.sys.model.KbAudit;
+import com.krm.dbaudit.web.sys.model.KbProfit;
+import com.krm.dbaudit.web.sys.model.KbStd;
+import com.krm.dbaudit.web.sys.model.SysAccessory;
+import com.krm.dbaudit.web.sys.model.SysDict;
+import com.krm.dbaudit.web.sys.service.KbAuditService;
+import com.krm.dbaudit.web.sys.service.KbProfitService;
+import com.krm.dbaudit.web.sys.service.KbStdEntryService;
+import com.krm.dbaudit.web.sys.service.SysAccessoryService;
+import com.krm.dbaudit.web.sys.service.SysDictService;
+import com.krm.dbaudit.web.sys.service.SysRepositoryService;
+import com.krm.dbaudit.web.util.ResponseUtils;
+
+/**
+ * 审计依据处理器
+ * @author Parker
+ *
+ */
+@Controller
+@RequestMapping("repository")
+public class RepositoryController extends BaseController
+{
+	@Resource
+	private SysDictService sysDictService;
+	@Resource
+	private SysRepositoryService sysRepositoryService;
+	@Resource
+	private SysAccessoryService sysAccessoryService;
+	@Resource
+	private KbStdEntryService kbStdEntryService;
+	@Resource
+	private KbProfitService kbProfitService;
+	@Resource
+	private KbAuditService kbAuditService;
+	
+	/**
+	 * 跳转到菜单管理页面
+	 * 加载树
+	 * @param model
+	 * @return 菜单管理模块html
+	 */
+	@RequestMapping
+	public String toMenu(Model model) {
+		List<SysDict> repositoryList1 = (List<SysDict>) sysDictService.findAllMultimap().get("kbstd_type");
+		List<SysDict> repositoryList2 = (List<SysDict>) sysDictService.findAllMultimap().get("kbprofit_type");
+		List<SysDict> repositoryList3 = (List<SysDict>) sysDictService.findAllMultimap().get("business_type");
+		List<SysDict> list = new ArrayList<SysDict>();
+		SysDict sysDict = new SysDict();
+		for (SysDict temp1 : repositoryList1)
+		{
+			sysDict = new SysDict();
+			if(temp1.getId() == 1501L){
+				sysDict.set("parentId", 0L);
+			}else{
+				sysDict.set("parentId", 1501L);
+			}
+			sysDict.setId(temp1.getId());
+			sysDict.set("name", temp1.getLabel());
+			sysDict.setValue(temp1.getValue());
+			list.add(sysDict);
+		}
+		for (SysDict temp2 : repositoryList2)
+		{
+			sysDict = new SysDict();
+			if(temp2.getId() == 1503L){
+				sysDict.set("parentId", 0L);
+			}else{
+				sysDict.set("parentId", 1503L);
+			}
+			sysDict.setId(temp2.getId());
+			sysDict.set("name", temp2.getLabel());
+			sysDict.setValue(temp2.getValue());
+			list.add(sysDict);
+		}
+		for (SysDict temp2 : repositoryList3)
+		{
+			sysDict = new SysDict();
+			if(temp2.getId() == 1401L){
+				sysDict.set("parentId", 0L);
+			}else{
+				sysDict.set("parentId", 1401L);
+			}
+			sysDict.setId(temp2.getId());
+			sysDict.set("name", temp2.getLabel());
+			sysDict.setValue(temp2.getValue());
+			list.add(sysDict);
+		}
+		model.addAttribute("treeList", JSON.toJSONString(list));
+		return "sys/repository/repository";
+	}
+	
+	/**
+	 * 分页显示菜单table
+	 * 
+	 * @param params
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "list", method = RequestMethod.POST)
+	public void list(@RequestParam Map<String, Object> params, HttpServletResponse response) throws Exception {
+		String parentId = null;
+		String type = null;
+		PageInfo<KbStd> kbStdPage = null;
+		PageInfo<KbProfit> kbProfitPage = null;
+		PageInfo<KbAudit> kbAuditPage = null;
+		if(params.containsKey("parentId")){
+			parentId = params.get("parentId").toString();
+			type = params.get("type").toString();
+			if(parentId.equals("null")){
+				if(type.equals("1501")){
+					params.put("type", null);
+					kbStdPage = sysRepositoryService.findPageInfo(params);
+					ResponseUtils.renderJson(response, kbStdPage);
+				}
+				if(type.equals("1503")){
+					params.put("type", null);
+					kbProfitPage = kbProfitService.findPageInfo(params);
+					ResponseUtils.renderJson(response, kbProfitPage);
+				}
+				if(type.equals("1401")){
+					params.put("type", null);
+					kbAuditPage = kbAuditService.findPageInfo(params);
+					ResponseUtils.renderJson(response, kbAuditPage);
+				}
+			}if(parentId.equals("1501")){
+				String array [] = type.split(",");
+				params.put("type", array);
+				kbStdPage = sysRepositoryService.findPageInfo(params);
+				ResponseUtils.renderJson(response, kbStdPage);
+			}if(parentId.equals("1503")){
+				String array [] = type.split(",");
+				params.put("type", array);
+				kbProfitPage = kbProfitService.findPageInfo(params);
+				ResponseUtils.renderJson(response, kbProfitPage);
+			}if(parentId.equals("1401")){
+				String array [] = type.split(",");
+				params.put("type", array);
+				kbAuditPage = kbAuditService.findPageInfo(params);
+				ResponseUtils.renderJson(response, kbAuditPage);
+			}
+		}else{
+			params.put("type", null);
+			kbStdPage = sysRepositoryService.findPageInfo(params);
+			ResponseUtils.renderJson(response, kbStdPage);
+		}
+	}
+	
+	/**
+	 * 弹窗显示
+	* @param params {"mode":edit}
+	* @return
+	 */
+	@RequestMapping(value="{mode}/showlayer",method=RequestMethod.POST)
+	public String layer(Long id,@PathVariable String mode, Model model){
+		KbStd kbStd = null;
+		//编辑页面
+		if (StringUtils.equalsIgnoreCase(mode, "edit")){
+			kbStd = sysRepositoryService.findById(id);
+			Long docId = kbStd.getDocId();
+			if(docId != null){
+				model.addAttribute("fileName", sysAccessoryService.findById(docId).getFileName());
+			}else{
+				model.addAttribute("fileName", null);
+			}
+		}
+		model.addAttribute("kbstd", kbStd);
+		return mode.equals("edit") ? "sys/repository/repository-edit"
+				: "sys/repository/entry-save";
+	}
+	
+	
+	
+	/**
+	 * 获取审计依据编码并跳转
+	 * @param params
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="add",method=RequestMethod.POST)
+	public String addNew(@RequestParam Map<String, Object> params, Model model){
+		String code = null;
+		List<Map<String,Object>> stdCodeList = new ArrayList<Map<String,Object>>();
+		String codePre = params.get("codePre").toString();
+		String type = params.get("type").toString();
+		String name = params.get("name").toString();
+		String parentId = params.get("parentId").toString();
+		if(parentId.equals("1501")){
+			stdCodeList = sysRepositoryService.findCodes(codePre);
+		}if(parentId.equals("1503")){
+			stdCodeList = kbProfitService.findCodes(codePre);
+		}if(parentId.equals("1401")){
+			stdCodeList = kbAuditService.findCodes(codePre);
+		}
+		//得到中间四位当前日期的年份
+		Calendar cal = Calendar.getInstance();
+		int y = cal.get(Calendar.YEAR);
+		String year = Integer.toString(y);
+		
+		// 把后三们序号作元素放到一个列表中
+		List<Integer> orderList = new ArrayList<Integer>();
+		for (Map<String, Object> map : stdCodeList)
+		{
+			code = map.get("code").toString();
+			orderList.add(new Integer(code.substring(code.length() - 3)));
+		}
+		// 从1开始，到999看哪个元素可用，形成检查点编码返回
+		for (int i = 1; i < 1000; i++){
+			if (!orderList.contains(i)){
+				code = codePre + year + String.format("%03d", i);
+				break;
+			}
+		}
+		model.addAttribute("code", code);
+		model.addAttribute("type", type);
+		model.addAttribute("name", name);
+		if(parentId.equals("1501")){
+			return "sys/repository/repository-save";
+		}if(parentId.equals("1503")){
+			return "sys/repository/kbprofit-save";
+		}if(parentId.equals("1401")){
+			return "sys/repository/kbaudit-save";
+		}
+		return null;
+	}
+		
+		
+	/**
+	 * 保存或修改数据
+	 * @param kbStd
+	 * @param file
+	 * @param request
+	 * @param mode
+	 * @return
+	 */
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	public @ResponseBody Integer save(@ModelAttribute KbStd kbStd, 
+			@RequestParam(value = "file", required = false) MultipartFile file, HttpServletRequest request, ModelMap mode){
+		Long docId = null;
+		Integer count1 = null;
+		if(file != null){
+			SysAccessory sysAccessory = new SysAccessory();
+			InputStream is=null;
+			try
+			{
+				String fileName = FileUtils.getFileNameNoSuffix(file.getOriginalFilename()); 
+				String extName = FileUtils.getFileSuffix(file.getOriginalFilename());
+				is = file.getInputStream();
+				byte[] data = new byte[(int) file.getSize()];  
+				is.read(data);
+				//编辑时，审计依据里有docId，将此id设置为附件id
+				//新增时，没有此id，自增
+				docId = kbStd.getDocId();					
+				if(docId != null){							
+					sysAccessory.setDocId(docId);
+				}
+				sysAccessory.setDocType("1501");
+				sysAccessory.setFileName(fileName);
+				sysAccessory.setAccessory(data);
+				sysAccessory.setExtName(extName);
+				sysAccessory.setStatus("1");
+				count1 = sysAccessoryService.saveFile(sysAccessory);
+			} catch (IOException e)
+			{
+				return -1;
+			}
+		}
+		//新增时，审计依据没有docId,从附件产生的id中获取
+		//编辑时，默认不变
+		docId = kbStd.getDocId();								
+		if(docId == null){										
+			if(count1 != null && count1 > 0){
+				docId = sysAccessoryService.getDocId() -1L;
+				kbStd.setDocId(docId);
+			}
+		}
+		if(kbStd.getDisporder() == null){
+			Long disporder = Long.parseLong(kbStd.getStdCode().substring(6));
+			kbStd.setDisporder(disporder);
+		}if(kbStd.getStatus() == null){
+			kbStd.setStatus("1");
+		}
+		Integer count2 = sysRepositoryService.save(kbStd);
+		if(count2 != null && count2 > 0){
+			return count2;
+		}
+		return -1;
+	}
+	
+	
+	/**
+	 * 删除审计依据
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "delete", method = RequestMethod.POST)
+	public @ResponseBody Integer dels(Long id) {
+		SysAccessory sysAccessory = null;
+		Long docId = null;
+		Integer count = 0;
+		if (null != id) {
+			sysAccessory = sysAccessoryService.findById(id);
+			if(sysAccessory != null){
+				docId = sysAccessory.getDocId();
+			}
+			count = sysRepositoryService.deleteKbstdByRootId(id);
+		}
+		if(count != null && count >0){
+			if(docId != null){
+				sysAccessoryService.deleteAccessoryByRootId(docId);
+			}
+		}
+		return count;
+	}
+	
+}

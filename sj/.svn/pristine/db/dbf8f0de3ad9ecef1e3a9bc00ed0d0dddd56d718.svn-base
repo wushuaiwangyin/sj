@@ -1,0 +1,197 @@
+package com.krm.dbaudit.web.risk.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.google.common.collect.Maps;
+import com.krm.dbaudit.common.excel.ExcelUtils;
+import com.krm.dbaudit.web.risk.service.SecondRiskService;
+import com.krm.dbaudit.web.risk.util.TimeUtil;
+import com.krm.dbaudit.web.util.ResponseUtils;
+
+/**
+ * 二次分析模型处理
+ * @author Parker
+ *
+ */
+@Controller
+@RequestMapping("second/risk")
+public class SecondRiskController
+{
+	@Resource
+	private SecondRiskService secondRiskService;
+	
+	/**
+	 * 默认查询所有涉及模型大于等于3的客户列表
+	 * 当月结果
+	 * @param params
+	 * @param response
+	 */
+	@RequestMapping(value="month", method=RequestMethod.POST)
+	public void findResultByMonth(@RequestParam Map<String, Object> params,
+			HttpServletResponse response) 
+	{
+		List<Map<String,Object>> list = secondRiskService.findResultByMonth(params);
+		for (Map<String, Object> map : list)
+		{
+			map.put("flag", 1);
+		}
+		ResponseUtils.renderJson(response, list);
+	}
+		
+	/**
+	 * 默认查询所有涉及模型大于等于3的客户列表
+	 * 昨日结果
+	 * @param params
+	 * @param response
+	 */
+	@RequestMapping(value="day", method=RequestMethod.POST)
+	public void findResultByDay(@RequestParam Map<String, Object> params,
+			HttpServletResponse response) 
+	{
+		List<Map<String,Object>> list = secondRiskService.findResultByDay(params);
+		for (Map<String, Object> map : list)
+		{
+			map.put("flag", 0);
+		}
+		ResponseUtils.renderJson(response, list);
+	}
+	
+	
+	/**
+	 * 点击模型数量进入查看详情
+	 * @param params
+	 * @param response
+	 */
+	@RequestMapping(value="details", method=RequestMethod.POST)
+	public void findDetails(@RequestParam Map<String, Object> params,
+			HttpServletResponse response) 
+	{
+		List<Map<String,Object>> list = secondRiskService.findDetails(params);
+		ResponseUtils.renderJson(response, list);
+	}
+	
+	
+	/**
+	 * 条件查询
+	 * 当月结果
+	 * @param params
+	 * @param response
+	 */
+	@RequestMapping(value="searchByMonth", method=RequestMethod.POST)
+	public void searchByMonth(@RequestParam Map<String, Object> params,
+			HttpServletResponse response) 
+	{
+		List<Map<String,Object>> temp = secondRiskService.findResultByMonth(params);
+		ResponseUtils.renderJson(response, addAll(params, temp));
+	}
+	
+	
+	/**
+	 * 条件查询
+	 * 昨日结构
+	 * @param params
+	 * @param response
+	 */
+	@RequestMapping(value="searchByDay", method=RequestMethod.POST)
+	public void searchByDay(@RequestParam Map<String, Object> params,
+			HttpServletResponse response) 
+	{
+		List<Map<String,Object>> temp = secondRiskService.findResultByDay(params);
+		ResponseUtils.renderJson(response, addAll(params, temp));
+	}
+	
+	
+	/**
+	 * 查询工具
+	 * @param params
+	 * @param temp
+	 * @return
+	 */
+	public List<Map<String,Object>> addAll(Map<String, Object> params,List<Map<String,Object>> temp){
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		if(temp != null){
+			for (Map<String, Object> map : temp)
+			{
+				params.put("custNo", map.get("custno"));
+				list.addAll(secondRiskService.findDetails(params));
+			}
+			return list;
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * 导出execl 
+	 * 默认显示数据导出
+	 */
+	@RequestMapping(value = "export1",method = RequestMethod.POST)
+	public void exportFile(@RequestParam Map<String, Object> params,
+			HttpServletResponse response){
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		Integer flag = Integer.parseInt(params.get("flag").toString());
+		if(flag == 1){														//1：当月
+			list = secondRiskService.findResultByMonth(params);
+		}else{																//0：昨日
+			list = secondRiskService.findResultByDay(params);
+		}
+		
+		Map<String, String> titleMap = Maps.newLinkedHashMap();
+		titleMap.put("客户号","custno");
+		titleMap.put("客户名","custname");
+		titleMap.put("模型个数","amount");
+		
+		
+		try {
+			//流的方式直接下载
+			ExcelUtils.exportExcel(response, "二次分析模型统计.xls", list, titleMap);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * 导出execl 
+	 * 查询结果导出
+	 */
+	@RequestMapping(value = "export2",method = RequestMethod.POST)
+	public void exportFile2(@RequestParam Map<String, Object> params,
+			HttpServletResponse response){
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		Integer flag = Integer.parseInt(params.get("flag").toString());
+		if(flag == 1){																//1：当月
+			list = this.addAll(params, secondRiskService.findResultByMonth(params));
+		}else{																		//0：昨日
+			list = this.addAll(params, secondRiskService.findResultByMonth(params));
+		}
+		
+		Map<String, String> titleMap = Maps.newLinkedHashMap();
+		titleMap.put("客户号","custno");
+		titleMap.put("客户名","custname");
+		titleMap.put("模型","modelname");
+		
+		
+		try {
+			//流的方式直接下载
+			ExcelUtils.exportExcel(response, "二次分析模型查询统计.xls", list, titleMap);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+}

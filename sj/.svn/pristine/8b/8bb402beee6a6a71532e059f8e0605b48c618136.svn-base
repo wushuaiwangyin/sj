@@ -1,0 +1,52 @@
+package com.krm.dbaudit.web.modeltool.controller;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.krm.dbaudit.common.base.BaseController;
+import com.krm.dbaudit.web.modeltool.service.ToolFunctionService;
+import com.krm.dbaudit.web.util.ResponseUtils;
+
+/**
+* @author chenwei on 2016-1-11
+*/
+
+@Controller
+@RequestMapping("model/function")
+public class ToolFunctionController  extends BaseController{
+	
+	@Resource
+	private ToolFunctionService toolFunctionService;
+	
+	/**
+	 * 鍒嗘瀽宸ュ叿鑾峰彇鏀寔鍑芥暟鍒楄〃
+	* @param 
+	* @return json
+	 */
+	@RequestMapping(value="getfunlist")
+	public void getfunlist(@RequestParam Map<String, Object> params,HttpServletResponse response) throws UnsupportedEncodingException{
+		String s = toolFunctionService.getFunctionList(params);
+		ResponseUtils.renderJson(response, s);
+	}
+	
+	/**
+	 * 鍒嗘瀽宸ュ叿鑾峰彇鏀寔鍑芥暟楠岃瘉
+	* @param 
+	* @return json
+	 */
+	@RequestMapping(value="checkfunlist")
+	public void checkfunlist(@RequestParam Map<String, Object> params,HttpServletResponse response) throws UnsupportedEncodingException{
+	//	params.put("tablename", "");
+	//	params.put("funscript", "111sdsdf(x1)+xxxx1(xxx2('x1',1),'x2',1) >1+xxx2('x1')");
+		String s = toolFunctionService.checkFunction(params);
+	//	FunctionUtils.analyzeFun("111sdsdf(x1)+xxxx1(xxx2('x1',1),'x2',1) >1+xxx2('x1')", null, s);
+		ResponseUtils.renderJson(response, s);
+	}
+}

@@ -1,0 +1,158 @@
+package com.krm.dbaudit.web.risk.model;
+
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Table(name="model_data_deal")
+public class DataDealModel
+{
+	@Id
+	@SequenceGenerator(name="Any",sequenceName="model_data_deal_seq")
+	private Long id;				//id
+	private Integer dataId;			//数据id
+	private Integer modelId;		//模型id
+	private String organId;			//交易机构
+	private String organName;		//交易机构名称
+	private String tranDate;		//交易日期（数据日期）
+	private String dataSeq;			//预警序号
+	private String reason;			//预警原因
+	private String dealEscription;	//处理情况简述
+	private String dealTtpe;		//处理方式，现场核实或者非现场核实
+	private String dealDetail;		//处理措施
+	private String relative;		//联系人
+	private String phoneOrMail;		//电话或邮件
+	private String dealTime;		//处理时间
+	private String dealUser;		//处理人
+	private String tranType;		//交易类型
+	public Long getId()
+	{
+		return id;
+	}
+	public void setId(Long id)
+	{
+		this.id = id;
+	}
+	public Integer getDataId()
+	{
+		return dataId;
+	}
+	public void setDataId(Integer dataId)
+	{
+		this.dataId = dataId;
+	}
+	public Integer getModelId()
+	{
+		return modelId;
+	}
+	public void setModelId(Integer modelId)
+	{
+		this.modelId = modelId;
+	}
+	public String getOrganId()
+	{
+		return organId;
+	}
+	public void setOrganId(String organId)
+	{
+		this.organId = organId;
+	}
+	public String getTranDate()
+	{
+		return tranDate;
+	}
+	public void setTranDate(String tranDate)
+	{
+		this.tranDate = tranDate;
+	}
+	public String getDataSeq()
+	{
+		return dataSeq;
+	}
+	public void setDataSeq(String dataSeq)
+	{
+		this.dataSeq = dataSeq;
+	}
+	public String getDealEscription()
+	{
+		return dealEscription;
+	}
+	public void setDealEscription(String dealEscription)
+	{
+		this.dealEscription = dealEscription;
+	}
+	public String getDealTtpe()
+	{
+		return dealTtpe;
+	}
+	public void setDealTtpe(String dealTtpe)
+	{
+		this.dealTtpe = dealTtpe;
+	}
+	public String getDealDetail()
+	{
+		return dealDetail;
+	}
+	public void setDealDetail(String dealDetail)
+	{
+		this.dealDetail = dealDetail;
+	}
+	public String getRelative()
+	{
+		return relative;
+	}
+	public void setRelative(String relative)
+	{
+		this.relative = relative;
+	}
+	public String getPhoneOrMail()
+	{
+		return phoneOrMail;
+	}
+	public void setPhoneOrMail(String phoneOrMail)
+	{
+		this.phoneOrMail = phoneOrMail;
+	}
+	public String getDealTime()
+	{
+		return dealTime;
+	}
+	public void setDealTime(String dealTime)
+	{
+		this.dealTime = dealTime;
+	}
+	public String getDealUser()
+	{
+		return dealUser;
+	}
+	public void setDealUser(String dealUser)
+	{
+		this.dealUser = dealUser;
+	}
+	public String getTranType()
+	{
+		return tranType;
+	}
+	public void setTranType(String tranType)
+	{
+		this.tranType = tranType;
+	}
+	public String getReason()
+	{
+		return reason;
+	}
+	public void setReason(String reason)
+	{
+		this.reason = reason;
+	}
+	public String getOrganName()
+	{
+		return organName;
+	}
+	public void setOrganName(String organName)
+	{
+		this.organName = organName;
+	}
+	
+	
+}

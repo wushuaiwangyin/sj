@@ -1,0 +1,47 @@
+package com.krm.dbaudit.web.all360.controller;
+
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.krm.dbaudit.common.base.BaseController;
+import com.krm.dbaudit.web.all360.service.QueryModelService;
+
+/**查询模型管理
+ * @author cat
+ *
+ */
+@Controller
+@RequestMapping("cust360/model/manage")
+public class ModelManageController extends BaseController {
+	@Resource 
+	private QueryModelService queryModelService;
+	@RequestMapping(value = "{mode}/{foo}/showLayer", method = RequestMethod.POST)	
+public String showTablePage(@PathVariable String mode,@PathVariable String foo,@RequestParam Map<String, Object> params,HttpServletResponse response, Model model) {
+		String forward="verfiy/360/modelManage/";
+		if(StringUtils.equals("add", mode)&& StringUtils.equals("table", foo)){//添加新的物理表信息
+			
+			forward="add_table";
+		}
+		if(StringUtils.equals("edit", mode)&& StringUtils.equals("table", foo)){//修改物理表信息
+			forward="add_table";
+		}
+		if(StringUtils.equals("add", mode)&& StringUtils.equals("cols", foo)){
+			forward="add_cols";
+		}
+		if(StringUtils.equals("edit", mode)&& StringUtils.equals("cols", foo)){
+			forward="add_cols";
+		}
+	return null;
+	
+}
+}

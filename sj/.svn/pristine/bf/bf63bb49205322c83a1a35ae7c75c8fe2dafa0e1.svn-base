@@ -1,0 +1,22 @@
+package com.krm.dbaudit.web.report.analysis.service;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.krm.dbaudit.common.base.ServiceMybatis;
+import com.krm.dbaudit.web.report.analysis.mapper.AnalysisMapper;
+import com.krm.dbaudit.web.report.analysis.model.Analysis;
+
+@Service("analysisService")
+public class AnalysisService extends ServiceMybatis<Analysis> {
+	@Resource
+	private AnalysisMapper analysisMapper;
+	
+	public List<Analysis> getAnalysisList(Map<String,Object> map){
+		return analysisMapper.getAnalysisList(map);
+	}
+}

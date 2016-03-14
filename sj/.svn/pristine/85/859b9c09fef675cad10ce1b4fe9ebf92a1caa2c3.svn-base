@@ -1,0 +1,74 @@
+package com.krm.dbaudit.web.risk.service;
+
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.krm.dbaudit.web.risk.mapper.DataDealModelMapper;
+import com.krm.dbaudit.web.risk.model.DataDealModel;
+import com.krm.dbaudit.web.risk.tabelMapper.QueryDetailInfoDao;
+
+
+@Service("dataDealService")
+public class DataDealService
+{
+	@Resource
+	private DataDealModelMapper dataDealModelMapper;
+	
+	
+	@Resource
+	private QueryDetailInfoDao queryDetailInfoDao;
+	
+	public QueryDetailInfoDao getQueryDetailInfoDao()
+	{
+		return queryDetailInfoDao;
+	}
+
+	public void setQueryDetailInfoDao(QueryDetailInfoDao queryDetailInfoDao)
+	{
+		this.queryDetailInfoDao = queryDetailInfoDao;
+	}
+
+	
+	
+	/**
+	 * 下发通知前查询是否已下发
+	 * @param id
+	 * @return
+	 */
+	public DataDealModel findById(Integer id){
+		return dataDealModelMapper.findById(id);
+	}
+	
+	
+	/**
+	 * 现场核实/非现场核实
+	 * @param params
+	 * @return
+	 */
+	public int dataDeal(Map<String, Object> params){
+		return dataDealModelMapper.dataDeal(params);
+	}
+
+	/**
+	 * 下发通知成功后更改源数据状态
+	 * @param dataId
+	 * @param status
+	 * @return
+	 */
+	public int updateDealStatus(Integer dataId, Integer status){
+		return queryDetailInfoDao.updateDealStatus(dataId, status);
+	}
+	
+	/**
+	 * 从数据源下发先判断是否省级已处理
+	 * @param dataId
+	 * @return
+	 */
+	public DataDealModel checkIsDealed(Integer dataId){
+		return dataDealModelMapper.checkIsDealed(dataId);
+	}
+}
+

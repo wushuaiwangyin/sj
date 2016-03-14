@@ -1,0 +1,116 @@
+@var treeData=treeData!;
+@var form=form!'search-form';
+@var parentId=parentId!;
+@var searchBtn=searchBtn!'search-btn';
+<script type="text/javascript">
+var setting = {
+		view:{
+			expandSpeed:100,
+			selectedMulti : false,
+			fontCss:function(treeId, treeNode) {
+				return (!!treeNode.highlight) ? {"font-weight":"bold","color":"red"} : {"font-weight":"normal","color":"#333"};
+			}
+		},
+		data : {
+			simpleData : {
+				enable : true,
+				idKey : "id",
+				pIdKey : "parentId"
+			}
+		},
+		callback: {
+			onClick: onClickNode,
+			beforeDrag: function(){return false;}
+		}
+	};
+	
+	
+	
+	function onClickNode(event, treeId, treeNode) {
+		if(treeNode.id == 1501 || treeNode.parentId == 1501){
+			loadData(treeNode.id,treeNode.parentId);
+		}
+		if(treeNode.id == 1503 ||  treeNode.parentId == 1503){
+			loadData1(treeNode.id,treeNode.parentId);
+		}
+		if(treeNode.id == 1401 || treeNode.parentId == 1401){
+			loadData2(treeNode.id,treeNode.parentId);
+		}
+	};
+	
+	var key = $("#search-input"),nodeList = [];
+	function searchNode(e) {
+		var value = $.trim(key.get(0).value);
+		
+		var keyType = "name";
+		if (key.hasClass("empty")) {
+			value = "";
+		}
+		
+		if (value === "") {
+			return;
+		}
+		updateNodes(false);
+		nodeList = treeObj.getNodesByParamFuzzy(keyType, value);
+		var type = "";
+		var parentId = "";
+		$.each(nodeList,function(i,obj){
+			type = (type + obj.id) + (((i + 1)== nodeList.length) ? '':','); 
+			parentId = obj.parentId;
+		})
+		loadData(type,parentId);
+		updateNodes(true);
+	};
+	function updateNodes(highlight) {
+		for(var i=0, l=nodeList.length; i<l; i++) {
+			nodeList[i].highlight = highlight;				
+			treeObj.updateNode(nodeList[i]);
+			treeObj.expandNode(nodeList[i].getParentNode(), true, false, false);
+		}
+	};
+	
+	var treeObj;
+	$(function(){
+		//树结构初始化
+		nodeList=[]; //清除缓存
+		var treeData = ${treeList};
+		
+		$.fn.zTree.init($("#treeRepository"), setting,treeData);
+		treeObj = $.fn.zTree.getZTreeObj("treeRepository");
+		// 默认展开一级节点
+		var nodes = treeObj.getNodesByParam("level", 1);
+			for(var i=0; i<nodes.length; i++) {
+				treeObj.expandNode(nodes[i].getParentNode(), true, false, false, false);
+			}
+		
+		
+		$("#search-all-btn").click(function(){
+			$("#search-form").find("input[name=id]").val("");
+			$("#search-form").find("input[name=name]").val("");
+			paging("search-form",1);
+			var node = treeObj.getNodeByParam("id", 0);
+			treeObj.selectNode(node,false);
+			if(undefined != nodeList) {
+				for(var i=0, l=nodeList.length; i<l; i++) {
+					nodeList[i].highlight = false;				
+					treeObj.updateNode(nodeList[i]);
+				}
+			}
+			loadData(1501);
+		}).trigger("click");
+		
+		$("#search-btn").click(function(e){
+			$("#search-form").find("input[name=id]").val("");
+			$("#search-form").val("");
+			var treeObj = $.fn.zTree.getZTreeObj("treeRepository");
+			treeObj.cancelSelectedNode();
+			paging("search-form",1);
+			searchNode(e);
+		});
+		
+	});
+	
+	
+	
+	
+</script>
