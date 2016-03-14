@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.krm.dbaudit.web.model.model.ModelBase;
+import com.krm.dbaudit.web.model.model.ModelProperty;
 import com.krm.dbaudit.web.upload.service.UploadService;
 
 /**
@@ -36,9 +39,34 @@ public class UploadController {
 	@Resource
 	private UploadService uploadService;
 	
+	/**
+	 * 
+	 * @param param
+	 * @param model
+	 * @return
+	 * @author wushuai
+	 * @date 2016-3-4
+	 * @version 1.0
+	 */
+	@RequestMapping
+	public String toModelBase(@RequestParam Map<String,String> param, Model model){
+        model.addAttribute("ps", "ws");
+        return "upload/index";
+    }
+	
+	/**
+     * 弹窗显示
+    * @param params 
+    * @return
+     */
+    @RequestMapping(value="showimportlayer",method=RequestMethod.POST)
+    public String layer(@RequestParam("ws") String ws, Model model){
+        model.addAttribute("ws", ws);
+        return "upload/import";
+    }
 	
 	@RequestMapping(value = "upload",method=RequestMethod.POST)
-	public @ResponseBody Integer upload(@RequestParam(value = "file", required = false) MultipartFile file, HttpServletRequest request, ModelMap model){
+	public @ResponseBody Integer upload(@RequestParam(value = "file", required = false) MultipartFile file,@RequestParam("ws") String ws, HttpServletRequest request, ModelMap model){
 		System.out.println("开始解析外部数据文件.");
         String path = request.getSession().getServletContext().getRealPath("upload");  
         String fileName = file.getOriginalFilename();
@@ -47,12 +75,15 @@ public class UploadController {
         try {
 			is = file.getInputStream();
 			//批量插入表名
+			if(ws.equals("1")){
 			List<Map<String,Object>> outdatas = importTableName(is);
 			uploadService.saveTable(outdatas);
-			
+			}
 			//批量插入表字段
-//			List<Map<String,Object>> outdatas = importTableField(is);
-//	        uploadService.saveTableAlians(outdatas);
+			if(ws.equals("2")){
+			List<Map<String,Object>> outdatas = importTableField(is);
+	        uploadService.saveTableAlians(outdatas);
+			}
 	        System.out.println("数据已经成功插入到数据库！");
 		} catch (IOException e) {
 			e.printStackTrace();
