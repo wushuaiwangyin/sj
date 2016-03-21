@@ -1,6 +1,8 @@
 package com.krm.dbaudit.web.risk.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,19 +13,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.krm.dbaudit.common.excel.ExcelUtils;
 import com.krm.dbaudit.common.spring.utils.SpringContextHolder;
 import com.krm.dbaudit.common.utils.StringConvert;
+import com.krm.dbaudit.web.model.model.AuditModel;
+import com.krm.dbaudit.web.model.model.AuditType;
+import com.krm.dbaudit.web.model.model.ModelProperty;
 import com.krm.dbaudit.web.model.service.AuditTypeService;
 import com.krm.dbaudit.web.model.service.ModelPropertyService;
 import com.krm.dbaudit.web.risk.model.RiskModelBase;
 import com.krm.dbaudit.web.risk.service.RiskDetectionService;
+import com.krm.dbaudit.web.sys.model.SysDict;
+import com.krm.dbaudit.web.sys.model.SysOffice;
 import com.krm.dbaudit.web.sys.model.SysUser;
 import com.krm.dbaudit.web.sys.service.SysDictService;
 import com.krm.dbaudit.web.sys.service.SysOfficeService;
@@ -330,10 +339,10 @@ public class RiskDetectionController
 		}
 	}
 	
-	/*
+	/**
 	 * 业务条线树
 	 * @param response
-	 
+	 */
 	@RequestMapping(value="buzLine",method=RequestMethod.GET)
 	public void findBuzLine(HttpServletResponse response,Long property)
 	{
@@ -341,6 +350,39 @@ public class RiskDetectionController
 		SysDict sd = null;
 		
 		List<ModelProperty> mps = modelPropertyService.findAllProperty();
+		if(property == null)			//首页树一级菜单不查询，不需要属性值
+		{
+			if (!mps.isEmpty())
+			{
+				for (ModelProperty mp : mps)
+				{
+					sd = new SysDict();
+					sd.setId(mp.getId());
+					sd.set("name", mp.getName());
+					sd.set("parentId", 0L);
+					sd.set("haveLine",  mp.getHaveLine());
+					sd.setValue("0");
+					sd.setType("buzline");
+					list.add(sd);
+					if(mp.getHaveLine() == 1)
+					{
+						List<SysDict> dicts = (List<SysDict>) sysDictService
+								.findAllMultimap().get("model_buz_line");
+						for (SysDict dic : dicts)
+						{
+							sd = new SysDict();
+							sd.setId(dic.getId());
+							sd.set("name",dic.getLabel());
+							sd.set("parentId", mp.getId());
+							sd.setValue(dic.getValue());
+							sd.setType("buzline");
+							list.add(sd);
+						}
+					}
+				}
+			}
+				//非首页一级菜单和首页二级菜单树
+		}else{									
 			if (!mps.isEmpty())
 			{
 				for (ModelProperty mp : mps)
@@ -373,18 +415,54 @@ public class RiskDetectionController
 					}
 				}
 			}
+		}
+
 		ResponseUtils.renderJson(response, list);
 	}
 	
 	
+	/**
+	 * 专项树
+	 * @param property
+	 * @param line
+	 * @return
+	 */
+	@RequestMapping(value = "auditTree")
+	public @ResponseBody List<AuditType> tree(Long property,String line) {
+		List<AuditType> auditTypeList = auditTypeService.findAllAuditType();
+		List<AuditModel> auditModelList = riskDetectionService.findAllAuditModel();
+		for (AuditModel auditModel : auditModelList)
+		{
+			AuditType auditType = new AuditType();
+			auditType.setId(auditModel.getId());
+			auditType.setParentId(auditModel.getType());
+			auditType.set("modelId", auditModel.getModel());
+			auditType.set("type", auditModel.getType());
+			auditType.set("name", auditModel.get("name"));
+			auditTypeList.add(auditType);
+		}
+		return auditTypeList;
+		
+	}
+	
+	/**
+	 * 机构树
+	 * @return
+	 */
+	@RequestMapping(value="tree",method = RequestMethod.POST)
+	public @ResponseBody List<SysOffice> getOfficeTreeList(@ModelAttribute SysOffice sysOffice){
+		List<SysOffice> list = SysUserUtils.getUserOffice();
+		return SysUserUtils.getUserOffice();
+	}
 
-/*
+
 
 	/**
 	 * 动态查询数据记录统计
 	 * @param params
 	 * @param response
 	 * @throws Exception
+	 */
 	 
 	@RequestMapping(value="status", method=RequestMethod.POST)
 	public @ResponseBody void findDataByStatus(@RequestParam Map<String, Object> params,
@@ -396,7 +474,7 @@ public class RiskDetectionController
 	 * 处理新增数据方法
 	 * @param params
 	 * @return
-	 
+	 */
 	public List<Map<String,Object>> statusTool(@RequestParam Map<String, Object> params){
 		Integer property = Integer.parseInt(params.get("property").toString());
 		Integer buzLine = null;
@@ -424,7 +502,7 @@ public class RiskDetectionController
 		});
 		return list;
 	}
-*/		
+	
 	
 	
 	

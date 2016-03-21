@@ -448,7 +448,7 @@
 	
 	
 	
-	<!--  	
+	 	
 	<select id="findAllAuditModel" resultType="com.krm.dbaudit.web.model.model.AuditModel">
 		select a.*, m.name as name from AUDIT_MODEL a
 	    left join MODEL_BASE m 
@@ -588,7 +588,6 @@
 		</where> 
 		group by dl.label, dl.sort  
 	</select>
--->
 
 
 	<resultMap id="modelData" type="com.krm.dbaudit.web.risk.model.ModelData" >  

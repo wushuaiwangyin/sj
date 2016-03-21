@@ -12,6 +12,7 @@ import com.github.abel533.sql.SqlMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.krm.dbaudit.common.base.ServiceMybatis;
+import com.krm.dbaudit.web.model.model.AuditModel;
 import com.krm.dbaudit.web.risk.mapper.RiskDetectionMapper;
 import com.krm.dbaudit.web.risk.model.ModelData;
 import com.krm.dbaudit.web.risk.model.RiskModelBase;
@@ -199,6 +200,9 @@ public class RiskDetectionService extends ServiceMybatis<RiskModelBase>
 		return riskDetectionMapper.findModelDataByPkid(id);
 	}
 
-	
+	public List<AuditModel> findAllAuditModel()
+	{
+		return riskDetectionMapper.findAllAuditModel();
+	}
 	
 }

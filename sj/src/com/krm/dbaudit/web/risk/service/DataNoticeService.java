@@ -101,7 +101,7 @@ public class DataNoticeService extends ServiceMybatis<DataNoticeModel>
 	 * @param id
 	 * @return
 	 */
-	public DataNoticeModel findByPkId(int id) {
+	public DataNoticeModel findByPkId(Integer id) {
 		return dataNoticeModelMapper.findByPkId(id);
 	}
 	

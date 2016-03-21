@@ -4,12 +4,12 @@
 
 	<sql id="dataDealColumns">
 		id, data_id, model_id, doc_id, data_status, organ_id, organ_name, tran_date, data_seq, reason, deal_escription, 
-		deal_type, deal_detail, relative, phone_or_mail, deal_time, deal_user, tran_type
+		deal_type, deal_detail, relative, phone_or_mail, deal_time, deal_user, tran_type, cust_no
 	</sql>
 	
 	<sql id="aliasDataDealColumns">
 		m.id, m.data_id, m.model_id, m.doc_id, m.data_status, m.organ_id, m.organ_name, m.tran_date, m.data_seq, m.reason, m.deal_escription, 
-		m.deal_type, m.deal_detail, m.relative, m.phone_or_mail, m.deal_time, m.deal_user, m.tran_type
+		m.deal_type, m.deal_detail, m.relative, m.phone_or_mail, m.deal_time, m.deal_user, m.tran_type, m.cust_no
 	</sql>
 	
 
@@ -24,7 +24,8 @@
 		#{dealEscription,jdbcType=VARCHAR},	#{dealType,jdbcType=VARCHAR},
 		#{dealDetail,jdbcType=VARCHAR},		#{relative,jdbcType=VARCHAR},
 		#{phoneOrMail,jdbcType=VARCHAR},	#{dealTime,jdbcType=VARCHAR},
-		#{dealUser,jdbcType=VARCHAR},		#{tranType,jdbcType=VARCHAR}
+		#{dealUser,jdbcType=VARCHAR},		#{tranType,jdbcType=VARCHAR},
+		#{custNo,jdbcType=VARCHAR}
 		)
 	</insert>
 	

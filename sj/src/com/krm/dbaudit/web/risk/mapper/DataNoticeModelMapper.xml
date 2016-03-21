@@ -7,7 +7,7 @@
 		bnotice_organ_id, bnotice_organ_name, notice_start_time, notice_colse_time, 
 		notice_end_time, notice_deal_require, notice_deal_require2, tran_date, 
 		notice_sender, notice_dealer, notice_sender2, notice_dealer2, 
-		notice_organ_id2, notice_organ_name2 
+		notice_organ_id2, notice_organ_name2, cust_no 
 	</sql>
 	
 	<sql id="aliasDataNoticeColumns">
@@ -16,7 +16,7 @@
 		a.bnotice_organ_id, a.bnotice_organ_name, a.notice_start_time, a.notice_colse_time, 
 		a.notice_end_time, a.notice_deal_require, a.notice_deal_require2, a.tran_date, 
 		a.notice_sender, a.notice_dealer, a.notice_sender2, a.notice_dealer2, 
-		a.notice_organ_id2, a.notice_organ_name2
+		a.notice_organ_id2, a.notice_organ_name2, a.cust_no
 	</sql>
 	
 	

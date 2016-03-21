@@ -148,6 +148,7 @@ public class DataController
 			.addAttribute("modelBase",modelBase)
 			.addAttribute("dataId", md.getId())
 			.addAttribute("modelId", md.getModelId())
+			.addAttribute("custNo", notice.getCustNo())
 			.addAttribute("noticeTime", DateUtils.getDate("yyyy-MM-dd HH:mm:ss"))
 			.addAttribute("flag", false);	//用来区分是否从数据源下发还是通知书中下发，true为数据源下发
 		return "risk/deal";
@@ -385,7 +386,7 @@ public class DataController
 			model.addAttribute("dataId", notice.getDataId() )
 				.addAttribute("modelId",notice.getModelId())
 				.addAttribute("organId",notice.getBnoticeOrganId())
-//				.addAttribute("custNo",params.containsKey("custNo")?params.get("coustNo").toString():null)
+				.addAttribute("custNo",notice.getCustNo())
 				.addAttribute("model", modelBase)
 				.addAttribute("bnoticeorganName", notice.getBnoticeOrganName())
 				.addAttribute("trandate", notice.getTranDate())
@@ -435,6 +436,7 @@ public class DataController
 			model.addAttribute("dataId", notice.getDataId() )
 				.addAttribute("modelId",notice.getModelId())
 				.addAttribute("organId",notice.getBnoticeOrganId())
+				.addAttribute("custNo",notice.getCustNo())
 				.addAttribute("model", modelBase)
 				.addAttribute("bnoticeorganName", notice.getBnoticeOrganName())
 				.addAttribute("trandate", notice.getTranDate())
