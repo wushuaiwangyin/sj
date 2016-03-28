@@ -453,7 +453,6 @@ public class ModelFlowService extends ServiceMybatis<ModelFlow>{
 			sqlMapper.insert(transsql);
 			
 		}catch(Exception e){
-			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -599,7 +598,6 @@ public class ModelFlowService extends ServiceMybatis<ModelFlow>{
 			
 		}catch(Exception e){
 			System.out.println(e.toString());
-			e.printStackTrace();
 			return false;
 		}
 		return true;

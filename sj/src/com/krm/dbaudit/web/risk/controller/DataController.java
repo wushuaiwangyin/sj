@@ -9,11 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -91,61 +88,33 @@ public class DataController
 	 */
 	@RequestMapping(value="deal", method=RequestMethod.POST)
 	public String deal(@RequestParam Map<String, Object> params,  Model model){
-		String dataIdWs = (String) params.get("dataId");
-		String modelIdWs = (String) params.get("modelId");
+		String dataId = (String) params.get("dataId");
+		String modelId = (String) params.get("modelId");
 		String noticeTime = DateUtils.getDate("yyyy-MM-dd HH:mm:ss");
-		int index=0;
 		
-		StringTokenizer stringTokenizerData = new StringTokenizer(dataIdWs,",");
-		StringTokenizer stringTokenizerModel = new StringTokenizer(modelIdWs,",");
-		
-		String modelId=stringTokenizerModel.nextToken();
 		ModelBase  modelBase = modelBaseService.findById(Long.parseLong(modelId));
-		List<Long> organList=new ArrayList<Long>();
-		List<SysOffice> borganl = new ArrayList<SysOffice>();
-		while(stringTokenizerData.hasMoreTokens()){
-		
-			
-			ModelData md =  riskDetectionService.findModelDataByPkid(Integer.parseInt(stringTokenizerData.nextToken()));
-			//获取交易机构
-			SysUser user = SysUserUtils.getSessionLoginUser();
-			SysOffice organ = sysOfficeService.selectByPrimaryKey(Long.parseLong(md.getOrganId()));		//交易机构
-			organList.add(organ.getId());
-			if(index==0){
-				SysOffice currentOrgan = sysOfficeService.selectByPrimaryKey(user.getOfficeId());			//当前机构
-				SysOffice superOrgan = sysOfficeService.selectByPrimaryKey(organ.getParentId());			//支行
-				SysOffice superOrgan2 = sysOfficeService.selectByPrimaryKey(superOrgan.getParentId());		//合行
-				SysOffice superOrgan3 = sysOfficeService.selectByPrimaryKey(superOrgan2.getParentId());		//办事处
-														//被通知机构
-				if("33001".equals(currentOrgan.getOrgLevel())){
-					borganl.add(superOrgan3);
-					borganl.add(superOrgan2);
-				}else{
-					borganl.add(superOrgan2);
-				}
-			}
-			index++;
+		ModelData md =  riskDetectionService.findModelDataByPkid(Integer.parseInt(dataId));
+		//获取交易机构
+		SysUser user = SysUserUtils.getSessionLoginUser();
+		SysOffice organ = sysOfficeService.selectByPrimaryKey(Long.parseLong(md.getOrganId()));		//交易机构
+		SysOffice currentOrgan = sysOfficeService.selectByPrimaryKey(user.getOfficeId());			//当前机构
+		SysOffice superOrgan = sysOfficeService.selectByPrimaryKey(organ.getParentId());			//支行
+		SysOffice superOrgan2 = sysOfficeService.selectByPrimaryKey(superOrgan.getParentId());		//合行
+		SysOffice superOrgan3 = sysOfficeService.selectByPrimaryKey(superOrgan2.getParentId());		//办事处
+		List<SysOffice> borganl = new ArrayList<SysOffice>();										//被通知机构
+		if("33001".equals(currentOrgan.getOrgLevel())){
+			borganl.add(superOrgan3);
+			borganl.add(superOrgan2);
+		}else{
+			borganl.add(superOrgan2);
 		}
 		model.addAttribute("borganl",borganl)
-		.addAttribute("modelBase",modelBase)
-		.addAttribute("dataId", dataIdWs )
-		.addAttribute("modelId", modelId )
-		.addAttribute("noticeTime", noticeTime)
-		.addAttribute("custNo",params.containsKey("custNo")?params.get("custNo").toString():null)
-		.addAttribute("flag", true);	//用来区分是否从数据源下发还是通知书中下发，true为数据源下发
-		Set<Object> organSet = new HashSet<Object>();
-		if(organList.size()==1){
-			model.addAttribute("ifOrganSame", "1");
-			
-		}else{
-			for(Long organLong : organList){
-				if(organSet.add(organLong)){
-					model.addAttribute("ifOrganSame", "0");
-				}else{
-					model.addAttribute("ifOrganSame", "1");
-				}
-			}
-		}
+			.addAttribute("modelBase",modelBase)
+			.addAttribute("dataId", dataId )
+			.addAttribute("modelId", modelId )
+			.addAttribute("noticeTime", noticeTime)
+			.addAttribute("custNo",params.containsKey("custNo")?params.get("custNo").toString():null)
+			.addAttribute("flag", true);	//用来区分是否从数据源下发还是通知书中下发，true为数据源下发
 		return "risk/deal";
 	}
 	
@@ -175,8 +144,7 @@ public class DataController
 		}else{
 			borganl.add(superOrgan2);
 		}
-		model.addAttribute("ifOrganSame", "-1")
-			.addAttribute("borganl",borganl)
+		model.addAttribute("borganl",borganl)
 			.addAttribute("modelBase",modelBase)
 			.addAttribute("dataId", md.getId())
 			.addAttribute("modelId", md.getModelId())
@@ -505,17 +473,11 @@ public class DataController
 	 */
 	@RequestMapping(value = "sendNotice",method=RequestMethod.POST)  
     public @ResponseBody Integer  sendNotice(@ModelAttribute DataNoticeModel notice, 
-    		@RequestParam(value = "file", required = false) MultipartFile file,
-    		@RequestParam(value = "dataIdWs") String dataIds, String flag,
+    		@RequestParam(value = "file", required = false) MultipartFile file, String flag,
     		HttpServletRequest request, ModelMap model) {
 	 	ModelDataFile dataFile = new ModelDataFile();
 	 	Map<String,Object> params = new HashMap<String, Object>();
-	 	StringTokenizer dataIdWs = new StringTokenizer(dataIds,",");
-	 while(dataIdWs.hasMoreTokens()){	
-	 	Integer dataId = Integer.parseInt(dataIdWs.nextToken().toString());
-	 	//数据id
-		notice.setDataId(dataId);
-		
+	 	Integer dataId = Integer.parseInt(notice.getDataId().toString());
 		ModelData md =  riskDetectionService.findModelDataByPkid(dataId);
 		params.put("dataId", notice.getDataId());
 		params.put("organId", SysUserUtils.getSessionLoginUser().getOfficeId());
@@ -572,7 +534,7 @@ public class DataController
 					if(flag.equals("true")){
 						int count2 = dataNoticeService.updateStatus(notice.getDataId(),2);
 						if(count2 > 0){
-							//return count1;
+							return count1;
 						}else{
 							return -1; //下发失败，返回-1
 						}
@@ -583,7 +545,7 @@ public class DataController
 						params.put("organId", currentOrgan.getParentId());
 						int count3 = dataNoticeService.updateNoticeStatus(params);
 						if(count3 > 0){
-							//return count1;
+							return count1;
 						}else{
 							return -1; //下发失败，返回-1
 						}
@@ -598,8 +560,6 @@ public class DataController
 		}else{
 			return -2;	//已处理完毕
 		}
-	 }
-	 return 1;
     }  
 	
 	
