@@ -3,8 +3,8 @@
 <div class="alert-success">提示信息：红色星号为必填选项</div>
     <form name="FormPost" id="dic-save" class="FormGrid"  method="post" enctype="multipart/form-data"
           action="">
-        
-		<input type="hidden" value="${dataId!}" name="dataId"/>
+		<input type="hidden" value="" name="dataId"/>
+		<input type="hidden" value="${dataId!}" name="dataIdWs"/>
 		<input type="hidden" value="${modelId!}" name="modelId"/>
 		<input type="hidden" value="${custNo!}" name="custNo"/>
 		<input type="hidden" value="${flag!}" name="flag"/>
@@ -74,7 +74,15 @@
     </form>
 </div>
 
+<script type="text/javascript">
 
+	//alert(1);
+	if(${ifOrganSame!}==0){
+		//layer.close($("#dic-save").data('loadi'));
+		layer.close(layer.index);
+		layer.msg('组织机构不相同不允许批量下发通知 ', 3, 1);
+	}
+</script>
 
 
 
@@ -85,7 +93,7 @@
     	$("#organSelect").chosen({width: "100%",search_contains: true,disable_search_threshold:10}); 
     });
 $(function(){
-    	
+
     	var index = layer.index;
     	var re = /^[1-9]+[0-9]*]*$/ ; 
         //提交时有一个bug,当修改时，如果ajaxurl验证方式的文本框框没有点击过时，不会提交
@@ -104,6 +112,7 @@ $(function(){
                 	type:'post',
                 	url:'${ctxPath}/data/sendNotice',
                 	success:function(data){
+                		//alert(data);
                         layer.close($("#dic-save").data('loadi'));
                         if(data !=null && re.test(data)) {
                             layer.msg('下发成功', 1, 1,function(){
@@ -111,11 +120,11 @@ $(function(){
                                 query();
                             });
                         }else if(data == 0){
-                        	layer.msg('数据已下发，请勿重复下发', 3, 1);
+                        	layer.msg('所选数据已下发，请勿重复下发 ', 3, 1);
                         }else if(data == -2){
-                        	layer.msg('数据已核实完毕，无法完成下发操作', 3, 1);
+                        	layer.msg('所选数据已核实完毕，无法完成下发操作', 3, 1);
                         }else{
-                            layer.msg('下发失败', 3, 1);
+                            layer.msg('部分数据下发失败', 3, 1);
                         }
                     }
                 	

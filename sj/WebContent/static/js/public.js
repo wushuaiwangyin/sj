@@ -539,10 +539,10 @@ function changeMenu(obj) {
 			if (rows.length <= 0) {
 				layer.msg('<span class="red bigger-120">请选择数据</span>');
 				return;
-			} if (rows.length > 1) {
+			} /*if (rows.length > 1) {
 				layer.msg('<span class="red bigger-120">请选择一条数据</span>');
 				return;
-			} else {
+			}*/ else {
 				var idstr = "";
 				var modelId = "";
 				var organId = "";
