@@ -115,13 +115,18 @@ public class DataController
 				SysOffice currentOrgan = sysOfficeService.selectByPrimaryKey(user.getOfficeId());			//当前机构
 				SysOffice superOrgan = sysOfficeService.selectByPrimaryKey(organ.getParentId());			//支行
 				SysOffice superOrgan2 = sysOfficeService.selectByPrimaryKey(superOrgan.getParentId());		//合行
-				SysOffice superOrgan3 = sysOfficeService.selectByPrimaryKey(superOrgan2.getParentId());		//办事处
+				SysOffice superOrgan3= null;
+				if(superOrgan2!=null){
+						superOrgan3 = sysOfficeService.selectByPrimaryKey(superOrgan2.getParentId());
+				}
+				//SysOffice superOrgan3 = sysOfficeService.selectByPrimaryKey(superOrgan2.getParentId());		//办事处
 														//被通知机构
 				if("33001".equals(currentOrgan.getOrgLevel())){
 					borganl.add(superOrgan3);
 					borganl.add(superOrgan2);
 				}else{
 					borganl.add(superOrgan2);
+					borganl.add(superOrgan);
 				}
 			}
 			index++;

@@ -1,4 +1,4 @@
-/*package com.krm.dbaudit.web.risk.controller;
+package com.krm.dbaudit.web.risk.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -57,11 +57,11 @@ import com.krm.dbaudit.web.util.DateUtil;
 import com.krm.dbaudit.web.util.ResponseUtils;
 import com.krm.dbaudit.web.util.SysUserUtils;
 
-*//**
+/**
  * 模型数据处理
  * @author Parker
  *
- *//*
+ */
 @Controller
 @RequestMapping("data")
 public class DataController
@@ -83,12 +83,12 @@ public class DataController
 	
 	@Resource
 	private ModelDataFileService modelDataFileService;
-	*//**
+	/**
 	 * 从数据源下发通知，获取数据id并跳转
 	 * @param params
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="deal", method=RequestMethod.POST)
 	public String deal(@RequestParam Map<String, Object> params,  Model model){
 		String dataIdWs = (String) params.get("dataId");
@@ -115,13 +115,18 @@ public class DataController
 				SysOffice currentOrgan = sysOfficeService.selectByPrimaryKey(user.getOfficeId());			//当前机构
 				SysOffice superOrgan = sysOfficeService.selectByPrimaryKey(organ.getParentId());			//支行
 				SysOffice superOrgan2 = sysOfficeService.selectByPrimaryKey(superOrgan.getParentId());		//合行
-				SysOffice superOrgan3 = sysOfficeService.selectByPrimaryKey(superOrgan2.getParentId());		//办事处
+				SysOffice superOrgan3= null;
+				if(superOrgan2!=null){
+						superOrgan3 = sysOfficeService.selectByPrimaryKey(superOrgan2.getParentId());
+				}
+				//SysOffice superOrgan3 = sysOfficeService.selectByPrimaryKey(superOrgan2.getParentId());		//办事处
 														//被通知机构
 				if("33001".equals(currentOrgan.getOrgLevel())){
 					borganl.add(superOrgan3);
 					borganl.add(superOrgan2);
 				}else{
 					borganl.add(superOrgan2);
+					borganl.add(superOrgan);
 				}
 			}
 			index++;
@@ -149,12 +154,12 @@ public class DataController
 		return "risk/deal";
 	}
 	
-	*//**
+	/**
 	 * 从通知书处再下发通知，获取数据id并跳转
 	 * @param params
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="prenotice", method=RequestMethod.POST)
 	public String prenotice(@RequestParam Map<String, Object> params,  Model model){
 		String id = (String) params.get("id");
@@ -189,12 +194,12 @@ public class DataController
 	
 	
 	
-	*//**
+	/**
 	 * 显示接收的通知书，通过状态来判断是否显示全部  1未处理，2已处理，否则显示全部
 	 * @param params
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="noticereceive/show", method=RequestMethod.GET)
 	public String shownoticereceive(@RequestParam Map<String, Object> params,  Model model){
 		String status = null;
@@ -215,13 +220,13 @@ public class DataController
 		return "risk/notice/index";
 	}
 	
-	*//**
+	/**
 	 * 显示接收的通知书，通过状态来判断是否显示全部  1未处理，2已处理，否则显示全部
 	 * @param params
 	 * @param model
 	 * @return
 	 * @throws UnsupportedEncodingException 
-	 *//*
+	 */
 	@RequestMapping(value="noticereceive/list", method=RequestMethod.POST)
 	public void noticelist(@RequestParam Map<String, Object> params,  Model model,HttpServletResponse response) 
 			throws Exception{
@@ -243,13 +248,13 @@ public class DataController
 		ResponseUtils.renderJson(response, page);
 	}
 	
-	*//**
+	/**
 	 * 显示未处理的通知书,rows参数可以设置返回多少行
 	 * @param params
 	 * @param model
 	 * @return 返回已经处理好的<tr></tr>字符串
 	 * @throws UnsupportedEncodingException 
-	 *//*
+	 */
 	@RequestMapping(value="noticereceive/listbytop", method=RequestMethod.POST)
 	public void noticelistbytop(@RequestParam Map<String, Object> params,  Model model,HttpServletResponse response) 
 			throws Exception{
@@ -286,11 +291,11 @@ public class DataController
 	}
 	
 	
-	*//**
+	/**
 	 * 弹窗显示
 	* @param params {"mode":detail}
 	* @return
-	 *//*
+	 */
 	@RequestMapping(value="{mode}/showlayer",method=RequestMethod.POST)
 	public String layer(Integer id,@PathVariable String mode, Model model){
 		DataNoticeModel dataNoticeModel = null;
@@ -325,12 +330,12 @@ public class DataController
 	}
 	
 	
-	*//**
+	/**
 	 * 下载附件
 	 * @param response
 	 * @param id
 	 * @throws Exception
-	 *//*
+	 */
 	@RequestMapping(value="download",method=RequestMethod.POST)
 	public void downloadFile(HttpServletResponse response, Long id) throws Exception{
 		Map<String,Object> modelDataFile = modelDataFileService.getFile(id);
@@ -347,12 +352,12 @@ public class DataController
 	}
 	
 	
-	*//**
+	/**
 	 * 显示发送的通知书，通过状态来判断是否显示全部  1未处理，2已处理，否则显示全部
 	 * @param params
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="noticesend/show", method=RequestMethod.GET)
 	public String shownoticesend(@RequestParam Map<String, Object> params,  Model model){
 		String status = null;
@@ -374,13 +379,13 @@ public class DataController
 	}
 	
 	
-	*//**
+	/**
 	 * 显示接收的通知书，通过状态来判断是否显示全部  1未处理，2已处理，否则显示全部
 	 * @param params
 	 * @param model
 	 * @return
 	 * @throws UnsupportedEncodingException 
-	 *//*
+	 */
 	@RequestMapping(value="noticesend/list", method=RequestMethod.POST)
 	public void noticereceivelist(@RequestParam Map<String, Object> params,  Model model,HttpServletResponse response) 
 			throws Exception{
@@ -402,12 +407,12 @@ public class DataController
 		ResponseUtils.renderJson(response, page);
 	}
 	
-	*//**
+	/**
 	 * 非现场核实，获取数据id并跳转
 	 * @param params
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="deal1", method=RequestMethod.POST)
 	public String deal1(@RequestParam Map<String, Object> params,  Model model){
 		String id = (String) params.get("id");
@@ -452,12 +457,12 @@ public class DataController
 	}
 	
 	
-	*//**
+	/**
 	 * 现场核实，获取数据id并跳转
 	 * @param params
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="deal2", method=RequestMethod.POST)
 	public String deal2(@RequestParam Map<String, Object> params,  Model model){
 		String id = (String) params.get("id");
@@ -499,10 +504,10 @@ public class DataController
 		return "risk/deal1";
 	}
 	
-	*//**
+	/**
 	 * 下发通知
 	* @param params
-	 *//*
+	 */
 	@RequestMapping(value = "sendNotice",method=RequestMethod.POST)  
     public @ResponseBody Integer  sendNotice(@ModelAttribute DataNoticeModel notice, 
     		@RequestParam(value = "file", required = false) MultipartFile file,
@@ -603,12 +608,12 @@ public class DataController
     }  
 	
 	
-	*//**
+	/**
 	 * 跳转到历史处理记录
 	 * @param params
 	 * @param model
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="toHistory",method=RequestMethod.POST)
 	public String toHistory(@RequestParam Map<String, Object> params, Model model){
 			model.addAttribute("modelId", params.get("modelId").toString())
@@ -621,12 +626,12 @@ public class DataController
 	}
 	
 	
-	*//**
+	/**
 	 * 历史处理记录列表
 	 * @param params
 	 * @param response
 	 * @throws Exception
-	 *//*
+	 */
 	@RequestMapping(value="historyDealInfo", method=RequestMethod.POST)
 	public void historyDealInfo(@RequestParam Map<String, Object> params,
 			HttpServletResponse response) throws Exception
@@ -636,14 +641,14 @@ public class DataController
 	}
 	
 	
-	*//**
+	/**
 	 * 快速处理
 	 * @param params
 	 * @param request
 	 * @param response
 	 * @return
 	 * @throws Exception
-	 *//*
+	 */
 	@RequestMapping(value="fastDeal", method=RequestMethod.POST)
 	public @ResponseBody int fastDeal(@RequestParam Map<String, Object> params,HttpServletRequest request,
 			HttpServletResponse response) throws Exception
@@ -676,10 +681,10 @@ public class DataController
 	}
 	
 	
-	*//**
+	/**
 	 * 现场核实/非现场核实
 	 * @param params
-	 *//*
+	 */
 	@RequestMapping(value="dataDeal",method=RequestMethod.POST)
 	public @ResponseBody int dataDeal(@ModelAttribute DataDealModel dataDealModel, 
     		@RequestParam(value = "file", required = false) MultipartFile file, @RequestParam Map<String, Object> params,
@@ -831,13 +836,13 @@ public class DataController
 	 
 	
 	
-	*//**
+	/**
 	 * 查询数据结果表头
 	 * @param params
 	 * @param model
 	 * @param response
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="queryHeaders",method = RequestMethod.POST)
 	public String queryHeaders(@RequestParam  Map<String, Object> params, Model model,
 			HttpServletResponse response){
@@ -850,12 +855,12 @@ public class DataController
 		return "risk/detail";
 	}
 	
-	*//**
+	/**
 	 * 查询数据结果内容
 	 * @param params
 	 * @param response
 	 * @throws Exception
-	 *//*
+	 */
 	@RequestMapping(value="queryContents",method = RequestMethod.POST)
 	public void queryContents(@RequestParam  Map<String, Object> params, 
 			HttpServletResponse response) throws Exception{
@@ -866,13 +871,13 @@ public class DataController
 	}
 	
 	
-	*//**
+	/**
 	 * 查询单条详细数据键
 	 * @param params
 	 * @param model
 	 * @param response
 	 * @return
-	 *//*
+	 */
 	@RequestMapping(value="queryDetailsHeaders",method = RequestMethod.POST)
 	public String queryDetailsHeaders(@RequestParam  Map<String, Object> params, Model model,
 			HttpServletResponse response){
@@ -887,11 +892,11 @@ public class DataController
 		return "risk/detail2";
 	}
 	
-	*//**
+	/**
 	 * 查询单条详细数据值
 	 * @param params
 	 * @param response
-	 *//*
+	 */
 	@RequestMapping(value="queryDetailsContents",method = RequestMethod.POST)
 	public void queryDetailsContents(@RequestParam  Map<String, Object> params,
 			HttpServletResponse response){
@@ -910,10 +915,10 @@ public class DataController
 	
 	
 	
-	*//**
+	/**
 	 * 批量导出模型数据
 	 * @throws Exception 
-	 *//*
+	 */
 	@RequestMapping(value = "export",method = RequestMethod.POST)
 	public void exportFile(@RequestParam Map<String, Object> params,HttpServletRequest request,
 			HttpServletResponse response) throws Exception{
@@ -943,13 +948,13 @@ public class DataController
 		
 	}
 	
-	*//**
+	/**
 	 * 生成临时文件
 	 * @param params
 	 * @param response
 	 * @return
 	 * @throws UnsupportedEncodingException 
-	 *//*
+	 */
 	public File generateFile(Map<String, Object> params,HttpServletRequest request, HttpServletResponse response) 
 			throws Exception{
 		String filePath = request.getSession().getServletContext().getRealPath("/")+"WEB-INF";
@@ -992,11 +997,11 @@ public class DataController
 		return null;
 	}
 	
-	*//**
+	/**
 	 * 下载单个文件
 	 * @param params
 	 * @param response
-	 *//*
+	 */
 	public void downloadFile(Map<String, Object> params,HttpServletResponse response){
 		String modelName = null;
 		modelName = riskDetectionService.findById(Long.parseLong(params.get("modelId").toString())).getName();
@@ -1034,4 +1039,3 @@ public class DataController
 		}
 	}
 }
-*/
