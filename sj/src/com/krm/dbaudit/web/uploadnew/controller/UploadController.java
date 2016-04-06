@@ -1,4 +1,4 @@
-package com.krm.dbaudit.web.uploadnew.controller;
+/*package com.krm.dbaudit.web.upload.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,20 +26,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.krm.dbaudit.web.model.model.ModelBase;
 import com.krm.dbaudit.web.model.model.ModelProperty;
-import com.krm.dbaudit.web.uploadnew.service.UploadService;
+import com.krm.dbaudit.web.upload.service.UploadService;
 
-/**
+*//**
 * @author Parker on 2016-02-22
-*/
+*//*
 
-@Controller("uploadControllerNew")
-@RequestMapping("uploadnew")
+@Controller
+@RequestMapping("upload")
 public class UploadController {
 	
 	@Resource
-	private UploadService uploadServiceNew;
+	private UploadService uploadService;
 	
-	/**
+	*//**
 	 * 
 	 * @param param
 	 * @param model
@@ -47,18 +47,18 @@ public class UploadController {
 	 * @author wushuai
 	 * @date 2016-3-4
 	 * @version 1.0
-	 */
+	 *//*
 	@RequestMapping
 	public String toModelBase(@RequestParam Map<String,String> param, Model model){
         model.addAttribute("ps", "ws");
         return "upload/index";
     }
 	
-	/**
+	*//**
      * 弹窗显示
     * @param params 
     * @return
-     */
+     *//*
     @RequestMapping(value="showimportlayer",method=RequestMethod.POST)
     public String layer(@RequestParam("ws") String ws, Model model){
         model.addAttribute("ws", ws);
@@ -77,12 +77,12 @@ public class UploadController {
 			//批量插入表名
 			if(ws.equals("1")){
 			List<Map<String,Object>> outdatas = importTableName(is);
-			uploadServiceNew.saveTable(outdatas);
+			uploadService.saveTable(outdatas);
 			}
 			//批量插入表字段
 			if(ws.equals("2")){
 			List<Map<String,Object>> outdatas = importTableField(is);
-	        uploadServiceNew.saveTableAlians(outdatas);
+	        uploadService.saveTableAlians(outdatas);
 			}
 	        System.out.println("数据已经成功插入到数据库！");
 		} catch (IOException e) {
@@ -91,11 +91,11 @@ public class UploadController {
         return 1;
 	}
 	
-	/**
+	*//**
 	 * 批量解析表名excel
 	 * @param file
 	 * @return
-	 */
+	 *//*
 	private  List<Map<String,Object>> importTableName(InputStream is){
 		List<Map<String,Object>> datalist = new ArrayList<Map<String,Object>>();
 		XSSFWorkbook xssfWorkbook = null;
@@ -153,11 +153,11 @@ public class UploadController {
 	}
 	
 	
-	/**
+	*//**
 	 * 批量解析表结构excel
 	 * @param file
 	 * @return
-	 */
+	 *//*
 	private  List<Map<String,Object>> importTableField(InputStream is){
 	List<Map<String,Object>> datalist = new ArrayList<Map<String,Object>>();
 	XSSFWorkbook xssfWorkbook = null;
@@ -194,7 +194,7 @@ public class UploadController {
 					}
 					map = new HashMap<String,Object>();
 					//表结构
-					map.put("id", uploadServiceNew.generateId());
+					map.put("id", uploadService.generateId());
 					map.put("tableName", tableName.getStringCellValue());
 					map.put("filedName", filedName.getStringCellValue());
 					map.put("filedAlias", filedAlias.getStringCellValue());
@@ -212,3 +212,4 @@ public class UploadController {
 	return datalist;
 }
 }
+*/

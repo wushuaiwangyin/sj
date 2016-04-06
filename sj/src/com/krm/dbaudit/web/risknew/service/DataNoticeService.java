@@ -1,4 +1,4 @@
-package com.krm.dbaudit.web.risknew.service;
+/*package com.krm.dbaudit.web.risk.service;
 
 
 import java.util.List;
@@ -12,16 +12,16 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.krm.dbaudit.common.base.ServiceMybatis;
-import com.krm.dbaudit.web.risknew.mapper.DataNoticeModelMapper;
-import com.krm.dbaudit.web.risknew.model.DataNoticeModel;
-import com.krm.dbaudit.web.risknew.tabelMapper.QueryDetailInfoDao;
+import com.krm.dbaudit.web.risk.mapper.DataNoticeModelMapper;
+import com.krm.dbaudit.web.risk.model.DataNoticeModel;
+import com.krm.dbaudit.web.risk.tabelMapper.QueryDetailInfoDao;
 
 
-@Service("dataNoticeServiceNew")
+@Service("dataNoticeService")
 public class DataNoticeService extends ServiceMybatis<DataNoticeModel>
 {
 	@Resource
-	private DataNoticeModelMapper dataNoticeModelMapperNew;
+	private DataNoticeModelMapper dataNoticeModelMapper;
 	
 	
 	@Resource
@@ -37,21 +37,21 @@ public class DataNoticeService extends ServiceMybatis<DataNoticeModel>
 		this.queryDetailInfoDao = queryDetailInfoDao;
 	}
 
-	/**
+	*//**
 	 * 查询表头
 	 * @param params
 	 * @return
-	 */
+	 *//*
 	public List<Map<String, Object>> queryHeaders(Map<String, Object> params){
 		return queryDetailInfoDao.queryHeaders(params);
 	}
 	
 	
-	/**
+	*//**
 	 * 查询表数据
 	 * @param params
 	 * @return
-	 */
+	 *//*
 	public List<Map<String, Object>> queryContents(Map<String, Object> params){
 		return queryDetailInfoDao.queryContents(params);
 	}
@@ -64,22 +64,22 @@ public class DataNoticeService extends ServiceMybatis<DataNoticeModel>
 	}
 	
 	
-	/**
+	*//**
 	 * 下发通知
 	 * @param params
 	 * @return
-	 */
+	 *//*
 	public int SendNotice(DataNoticeModel  notice){
-		return dataNoticeModelMapperNew.insert(notice);
+		return dataNoticeModelMapper.insert(notice);
 	}
 
 	
-	/**
+	*//**
 	 * 下发通知成功后更改源数据通知状态
 	 * @param dataId
 	 * @param status
 	 * @return
-	 */
+	 *//*
 	public int updateStatus(Integer dataId, Integer status){
 		return queryDetailInfoDao.updateNoticeStatus(dataId, status);
 	}
@@ -87,58 +87,59 @@ public class DataNoticeService extends ServiceMybatis<DataNoticeModel>
 	
 	public PageInfo<DataNoticeModel> findNoticePageInfo(Map<String, Object> params) {
 		PageHelper.startPage(params);
-		List<DataNoticeModel> list = dataNoticeModelMapperNew.findPageInfo(params);
+		List<DataNoticeModel> list = dataNoticeModelMapper.findPageInfo(params);
 		return new PageInfo<DataNoticeModel>(list);
 	}
 	
 	public List<DataNoticeModel> findNoticeByNumber(Map<String, Object> params) {
-		List<DataNoticeModel> list = dataNoticeModelMapperNew.findNoticeByNumber(params);
+		List<DataNoticeModel> list = dataNoticeModelMapper.findNoticeByNumber(params);
 		return list;
 	}
 
-	/**
+	*//**
 	 * 查询详细信息
 	 * @param id
 	 * @return
-	 */
+	 *//*
 	public DataNoticeModel findByPkId(Integer id) {
-		return dataNoticeModelMapperNew.findByPkId(id);
+		return dataNoticeModelMapper.findByPkId(id);
 	}
 	
-	/**
+	*//**
 	 * 处理完成后终止通知状态
 	 * @param dataId
 	 * @param status
 	 * @return
-	 */
+	 *//*
 	public int endNoticeStatus(Map<String, Object> params){
-		return dataNoticeModelMapperNew.endNoticeStatus(params);
+		return dataNoticeModelMapper.endNoticeStatus(params);
 	}
 	
-	/**
+	*//**
 	 * 从通知书下发后更改通知状态
 	 * @param dataId
 	 * @param status
 	 * @return
-	 */
+	 *//*
 	public int updateNoticeStatus(Map<String, Object> params){
-		return dataNoticeModelMapperNew.updateNoticeStatus(params);
+		return dataNoticeModelMapper.updateNoticeStatus(params);
 	}
 
 	
 	public PageInfo<DataNoticeModel> findSendNoticePageInfo(Map<String, Object> params) {
 		PageHelper.startPage(params);
-		List<DataNoticeModel> list = dataNoticeModelMapperNew.findSendNoticePageInfo(params);
+		List<DataNoticeModel> list = dataNoticeModelMapper.findSendNoticePageInfo(params);
 		return new PageInfo<DataNoticeModel>(list);
 	}
 	
-	/**
+	*//**
 	 * 下发前检测是否已下发
 	 * @param params
 	 * @return
-	 */
+	 *//*
 	public DataNoticeModel checkIsReapted(Map<String, Object> params){
-		return dataNoticeModelMapperNew.checkIsReapted(params);
+		return dataNoticeModelMapper.checkIsReapted(params);
 	}
 	
 }
+*/

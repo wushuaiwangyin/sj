@@ -2,7 +2,7 @@
         <h5 class="widget-title"></h5>
         <div class="widget-toolbar no-border">
                 <span class="btn btn-purple btn-xs"
-                      onclick="downloadDetails('table-detail_info','${ctxPath}/datanew/export?modelId=${modelId!}')">
+                      onclick="downloadDetails('table-detail_info','${ctxPath}/data/export?modelId=${modelId!}')">
                 <i class="ace-icon fa fa-cloud-download bigger-130"></i>
                 	导出Excel</span>
         </div>
@@ -108,7 +108,7 @@
                     <ul class="dropdown-menu dropdown-menu-left dropdown-145 dropdown-lighter dropdown-close dropdown-caret">
                         <li>
                             <a class="blue" href="javascript:void(0);" title="下发通知"
-                               data-url="${ctxPath}/datanew/deal"
+                               data-url="${ctxPath}/data/deal"
                                data-mode="send" data-title="下发通知"
                                data-width="50%"
                                data-table="table-detail_info" 
@@ -119,7 +119,7 @@
                         <li>
                             <a class="blue" href="javascript:void(0);" title="非现场核实"
                                data-mode="send" data-title="非现场核实"
-                               data-url="${ctxPath}/datanew/deal1"
+                               data-url="${ctxPath}/data/deal1"
                                data-width="50%"
                                data-data="{id:'{row.id}'}"
                                data-table="table-detail_info" 
@@ -129,7 +129,7 @@
                         </li>
                         <li>
                             <a class="blue" href="javascript:void(0);" title="现场核实"
-                               data-url="${ctxPath}/datanew/deal2"
+                               data-url="${ctxPath}/data/deal2"
                                data-mode="send"  data-title="现场核实"
                                data-width="50%"
                                data-table="table-detail_info" 
@@ -164,9 +164,9 @@
 	pageNumber:1,
 	sidePagination:'server',
     onDblClickRow:function(row){
-        $.cuslayer({mode:"detail",url:"${ctxPath}/datanew/queryDetailsHeaders",data:row,table:"table-detail_info", width:'50%',title:'详细信息'});
+        $.cuslayer({mode:"detail",url:"${ctxPath}/data/queryDetailsHeaders",data:row,table:"table-detail_info", width:'50%',title:'详细信息'});
     },
-	url:'${ctxPath}/datanew/queryContents?modelId=${modelId!}&organId=${organId!}&custNo=${custNo!}&dealStatus=${dealStatus!}'
+	url:'${ctxPath}/data/queryContents?modelId=${modelId!}&organId=${organId!}&custNo=${custNo!}&dealStatus=${dealStatus!}'
     });
     
     function operatorBtn1(value, row){
@@ -179,7 +179,7 @@
     $("#operator-select").chosen({width: "150px", search_contains: true, disable_search_threshold: 10});
   
     function query(){
-    	$table_detail.bootstrapTable("refresh",{url:"${ctxPath}/datanew/queryContents?modelId=${modelId!}&organId=${organId!}&custNo=${custNo!}&dealStatus=${dealStatus!}"})
+    	$table_detail.bootstrapTable("refresh",{url:"${ctxPath}/data/queryContents?modelId=${modelId!}&organId=${organId!}&custNo=${custNo!}&dealStatus=${dealStatus!}"})
     }
     
 
@@ -265,7 +265,7 @@ $("#column-select").chosen().change(function(){
     	var params = jQuery("#search-form1").serialize(); 
 		params = decodeURIComponent(params,true);
 		params = encodeURI(encodeURI(params));
-    	$('#table-detail_info').bootstrapTable("refresh",{url:"${ctxPath}/datanew/queryContents?"+params+"&modelId=${modelId!}&organId=${organId!}&custNo=${custNo!}&dealStatus=${dealStatus!}"})
+    	$('#table-detail_info').bootstrapTable("refresh",{url:"${ctxPath}/data/queryContents?"+params+"&modelId=${modelId!}&organId=${organId!}&custNo=${custNo!}&dealStatus=${dealStatus!}"})
     }
    
     function downloadDetails(formid, action) {
@@ -294,7 +294,7 @@ $("#column-select").chosen().change(function(){
 		if(row.dealstatus == '已处理'){
 			return ' <a  href="javascript:void(0);"'+
 					' data-mode="detail" data-title="处理信息详细"'+
-					' data-url="${ctxPath}/datanew/dealDetails/showlayer" '+
+					' data-url="${ctxPath}/data/dealDetails/showlayer" '+
 					'data-width="50%"'+
 					'data-data="{id:'+row.dataid+'}" >'+
 					value +

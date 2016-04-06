@@ -30,11 +30,11 @@
 	<div class="hidden-sm hidden-xs action-buttons">
 		<a class="btn btn-primary btn-xs" href="javascript:void(0);"
                data-mode="fastDeal" data-title="快速处理"
-               data-url="${ctxPath}/datanew/fastDeal?dataId=${dataId!}&flag=${flag!}&noticeId=${noticeId!}"
+               data-url="${ctxPath}/data/fastDeal?dataId=${dataId!}&flag=${flag!}&noticeId=${noticeId!}"
                data-data="{id:'{row.id}'}"
                data-width="80%"
                data-reloadurl="xxxxx"
-               data-msg="${ctxPath}/datanew/queryDetailsHeaders"
+               data-msg="${ctxPath}/data/queryDetailsHeaders"
                >
 				<span>快速处理</span>
 			</a>
@@ -54,7 +54,7 @@
 			striped:true,
 			pageNumber:1,
 			sidePagination:'server',
-			url:'${ctxPath}/datanew/historyDealInfo?modelId=${modelId!}&organId=${organId}&dealType=${dealType}'
+			url:'${ctxPath}/data/historyDealInfo?modelId=${modelId!}&organId=${organId}&dealType=${dealType}'
 	    });
 	})
     function operatorBtn4(value, row){
@@ -64,7 +64,7 @@
     function status(value,row,index){
 			return ' <a  href="javascript:void(0);"'+
 					' data-mode="detail" data-title="处理信息详细"'+
-					' data-url="${ctxPath}/datanew/dealDetails/showlayer" '+
+					' data-url="${ctxPath}/data/dealDetails/showlayer" '+
 					'data-width="50%"'+
 					'data-data="{id:'+row.dataId+'}" >'+
 					value +

@@ -1,4 +1,4 @@
-package com.krm.dbaudit.web.risknew.controller;
+/*package com.krm.dbaudit.web.risk.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -42,14 +42,14 @@ import com.krm.dbaudit.common.utils.DateUtils;
 import com.krm.dbaudit.common.utils.FileUtils;
 import com.krm.dbaudit.web.model.model.ModelBase;
 import com.krm.dbaudit.web.model.service.ModelBaseService;
-import com.krm.dbaudit.web.risknew.model.DataDealModel;
-import com.krm.dbaudit.web.risknew.model.DataNoticeModel;
-import com.krm.dbaudit.web.risknew.model.ModelData;
-import com.krm.dbaudit.web.risknew.model.ModelDataFile;
-import com.krm.dbaudit.web.risknew.service.DataDealService;
-import com.krm.dbaudit.web.risknew.service.DataNoticeService;
-import com.krm.dbaudit.web.risknew.service.ModelDataFileService;
-import com.krm.dbaudit.web.risknew.service.RiskDetectionService;
+import com.krm.dbaudit.web.risk.model.DataDealModel;
+import com.krm.dbaudit.web.risk.model.DataNoticeModel;
+import com.krm.dbaudit.web.risk.model.ModelData;
+import com.krm.dbaudit.web.risk.model.ModelDataFile;
+import com.krm.dbaudit.web.risk.service.DataDealService;
+import com.krm.dbaudit.web.risk.service.DataNoticeService;
+import com.krm.dbaudit.web.risk.service.ModelDataFileService;
+import com.krm.dbaudit.web.risk.service.RiskDetectionService;
 import com.krm.dbaudit.web.sys.model.SysOffice;
 import com.krm.dbaudit.web.sys.model.SysUser;
 import com.krm.dbaudit.web.sys.service.SysOfficeService;
@@ -57,23 +57,23 @@ import com.krm.dbaudit.web.util.DateUtil;
 import com.krm.dbaudit.web.util.ResponseUtils;
 import com.krm.dbaudit.web.util.SysUserUtils;
 
-/**
+*//**
  * 模型数据处理
  * @author Parker
  *
- */
-@Controller("dataControllerNew")
-@RequestMapping("datanew")
+ *//*
+@Controller
+@RequestMapping("data")
 public class DataController
 {
 	@Resource
-	private DataNoticeService dataNoticeServiceNew;
+	private DataNoticeService dataNoticeService;
 	
 	@Resource
-	private DataDealService dataDealServiceNew;
+	private DataDealService dataDealService;
 	
 	@Resource
-	private RiskDetectionService riskDetectionServiceNew;
+	private RiskDetectionService riskDetectionService;
 	
 	@Resource
 	private ModelBaseService modelBaseService;
@@ -82,13 +82,13 @@ public class DataController
 	private SysOfficeService sysOfficeService;
 	
 	@Resource
-	private ModelDataFileService modelDataFileServiceNew;
-	/**
+	private ModelDataFileService modelDataFileService;
+	*//**
 	 * 从数据源下发通知，获取数据id并跳转
 	 * @param params
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="deal", method=RequestMethod.POST)
 	public String deal(@RequestParam Map<String, Object> params,  Model model){
 		String dataIdWs = (String) params.get("dataId");
@@ -106,7 +106,7 @@ public class DataController
 		while(stringTokenizerData.hasMoreTokens()){
 		
 			
-			ModelData md =  riskDetectionServiceNew.findModelDataByPkid(Integer.parseInt(stringTokenizerData.nextToken()));
+			ModelData md =  riskDetectionService.findModelDataByPkid(Integer.parseInt(stringTokenizerData.nextToken()));
 			//获取交易机构
 			SysUser user = SysUserUtils.getSessionLoginUser();
 			SysOffice organ = sysOfficeService.selectByPrimaryKey(Long.parseLong(md.getOrganId()));		//交易机构
@@ -146,20 +146,20 @@ public class DataController
 				}
 			}
 		}
-		return "risknew/deal";
+		return "risk/deal";
 	}
 	
-	/**
+	*//**
 	 * 从通知书处再下发通知，获取数据id并跳转
 	 * @param params
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="prenotice", method=RequestMethod.POST)
 	public String prenotice(@RequestParam Map<String, Object> params,  Model model){
 		String id = (String) params.get("id");
-		DataNoticeModel  notice = dataNoticeServiceNew.findByPkId(Integer.parseInt(id));
-		ModelData md =  riskDetectionServiceNew.findModelDataByPkid(notice.getDataId());
+		DataNoticeModel  notice = dataNoticeService.findByPkId(Integer.parseInt(id));
+		ModelData md =  riskDetectionService.findModelDataByPkid(notice.getDataId());
 		ModelBase  modelBase = modelBaseService.findById(Long.parseLong(md.getModelId().toString()));
 		//获取交易机构
 		SysUser user = SysUserUtils.getSessionLoginUser();
@@ -183,18 +183,18 @@ public class DataController
 			.addAttribute("custNo", notice.getCustNo())
 			.addAttribute("noticeTime", DateUtils.getDate("yyyy-MM-dd HH:mm:ss"))
 			.addAttribute("flag", false);	//用来区分是否从数据源下发还是通知书中下发，true为数据源下发
-		return "risknew/deal";
+		return "risk/deal";
 	}
 	
 	
 	
 	
-	/**
+	*//**
 	 * 显示接收的通知书，通过状态来判断是否显示全部  1未处理，2已处理，否则显示全部
 	 * @param params
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="noticereceive/show", method=RequestMethod.GET)
 	public String shownoticereceive(@RequestParam Map<String, Object> params,  Model model){
 		String status = null;
@@ -212,16 +212,16 @@ public class DataController
 		SysUser user = SysUserUtils.getSessionLoginUser();
 		SysOffice currentOrgan = sysOfficeService.selectByPrimaryKey(user.getOfficeId());
 		model.addAttribute("orgLevel", currentOrgan.getOrgLevel());
-		return "risknew/notice/index";
+		return "risk/notice/index";
 	}
 	
-	/**
+	*//**
 	 * 显示接收的通知书，通过状态来判断是否显示全部  1未处理，2已处理，否则显示全部
 	 * @param params
 	 * @param model
 	 * @return
 	 * @throws UnsupportedEncodingException 
-	 */
+	 *//*
 	@RequestMapping(value="noticereceive/list", method=RequestMethod.POST)
 	public void noticelist(@RequestParam Map<String, Object> params,  Model model,HttpServletResponse response) 
 			throws Exception{
@@ -239,17 +239,17 @@ public class DataController
 			organName = java.net.URLDecoder.decode(organName, "UTF-8");
 			params.put("organName", organName);
 		}
-		page = dataNoticeServiceNew.findNoticePageInfo(params);
+		page = dataNoticeService.findNoticePageInfo(params);
 		ResponseUtils.renderJson(response, page);
 	}
 	
-	/**
+	*//**
 	 * 显示未处理的通知书,rows参数可以设置返回多少行
 	 * @param params
 	 * @param model
 	 * @return 返回已经处理好的<tr></tr>字符串
 	 * @throws UnsupportedEncodingException 
-	 */
+	 *//*
 	@RequestMapping(value="noticereceive/listbytop", method=RequestMethod.POST)
 	public void noticelistbytop(@RequestParam Map<String, Object> params,  Model model,HttpServletResponse response) 
 			throws Exception{
@@ -267,7 +267,7 @@ public class DataController
 			organName = java.net.URLDecoder.decode(organName, "UTF-8");
 			params.put("organName", organName);
 		}
-		List<DataNoticeModel> list = dataNoticeServiceNew.findNoticeByNumber(params);
+		List<DataNoticeModel> list = dataNoticeService.findNoticeByNumber(params);
 		StringBuffer sb = new StringBuffer();
 		
 		for(int i=0;i<list.size();i++){
@@ -286,20 +286,20 @@ public class DataController
 	}
 	
 	
-	/**
+	*//**
 	 * 弹窗显示
 	* @param params {"mode":detail}
 	* @return
-	 */
+	 *//*
 	@RequestMapping(value="{mode}/showlayer",method=RequestMethod.POST)
 	public String layer(Integer id,@PathVariable String mode, Model model){
 		DataNoticeModel dataNoticeModel = null;
 		DataDealModel dataDealModel = null;
 		if (StringUtils.equalsIgnoreCase(mode, "detail")){
-			dataNoticeModel = dataNoticeServiceNew.findByPkId(id);
+			dataNoticeModel = dataNoticeService.findByPkId(id);
 			Long docId = dataNoticeModel.getDocId();
 			if(docId != null){
-				ModelDataFile modelDataFile = modelDataFileServiceNew.findById(docId);
+				ModelDataFile modelDataFile = modelDataFileService.findById(docId);
 				model.addAttribute("modelDataFile", modelDataFile);
 			}else{
 				model.addAttribute("modelDataFile", null);
@@ -308,10 +308,10 @@ public class DataController
 		}if (StringUtils.equalsIgnoreCase(mode, "dealDetails")){
 			SysUser user = SysUserUtils.getSessionLoginUser();
 			SysOffice currentOrgan = sysOfficeService.selectByPrimaryKey(user.getOfficeId());
-			dataDealModel = dataDealServiceNew.findBydataId(id);
+			dataDealModel = dataDealService.findBydataId(id);
 			Long docId = dataDealModel.getDocId();
 			if(docId != null){
-				ModelDataFile modelDataFile = modelDataFileServiceNew.findById(docId);
+				ModelDataFile modelDataFile = modelDataFileService.findById(docId);
 				model.addAttribute("modelDataFile", modelDataFile)
 					 .addAttribute("currentOrgan", currentOrgan);
 			}else{
@@ -320,20 +320,20 @@ public class DataController
 			}
 			model.addAttribute("dataDealModel", dataDealModel);
 		}
-		return  mode.equals("detail") ? "risknew/notice/data-deal-detail"
-				: "risknew/notice/feedback-detail";
+		return  mode.equals("detail") ? "risk/notice/data-deal-detail"
+				: "risk/notice/feedback-detail";
 	}
 	
 	
-	/**
+	*//**
 	 * 下载附件
 	 * @param response
 	 * @param id
 	 * @throws Exception
-	 */
+	 *//*
 	@RequestMapping(value="download",method=RequestMethod.POST)
 	public void downloadFile(HttpServletResponse response, Long id) throws Exception{
-		Map<String,Object> modelDataFile = modelDataFileServiceNew.getFile(id);
+		Map<String,Object> modelDataFile = modelDataFileService.getFile(id);
 		String fileName = modelDataFile.get("fileName").toString();
 		String extName = modelDataFile.get("extName").toString();
 		oracle.sql.BLOB blob = (BLOB) modelDataFile.get("fileContent");
@@ -347,12 +347,12 @@ public class DataController
 	}
 	
 	
-	/**
+	*//**
 	 * 显示发送的通知书，通过状态来判断是否显示全部  1未处理，2已处理，否则显示全部
 	 * @param params
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="noticesend/show", method=RequestMethod.GET)
 	public String shownoticesend(@RequestParam Map<String, Object> params,  Model model){
 		String status = null;
@@ -370,17 +370,17 @@ public class DataController
 		SysUser user = SysUserUtils.getSessionLoginUser();
 		SysOffice currentOrgan = sysOfficeService.selectByPrimaryKey(user.getOfficeId());
 		model.addAttribute("orgLevel", currentOrgan.getOrgLevel());
-		return "risknew/notice/send";
+		return "risk/notice/send";
 	}
 	
 	
-	/**
+	*//**
 	 * 显示接收的通知书，通过状态来判断是否显示全部  1未处理，2已处理，否则显示全部
 	 * @param params
 	 * @param model
 	 * @return
 	 * @throws UnsupportedEncodingException 
-	 */
+	 *//*
 	@RequestMapping(value="noticesend/list", method=RequestMethod.POST)
 	public void noticereceivelist(@RequestParam Map<String, Object> params,  Model model,HttpServletResponse response) 
 			throws Exception{
@@ -398,22 +398,22 @@ public class DataController
 			organName = java.net.URLDecoder.decode(organName, "UTF-8");
 			params.put("organName", organName);
 		}
-		page = dataNoticeServiceNew.findSendNoticePageInfo(params);
+		page = dataNoticeService.findSendNoticePageInfo(params);
 		ResponseUtils.renderJson(response, page);
 	}
 	
-	/**
+	*//**
 	 * 非现场核实，获取数据id并跳转
 	 * @param params
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="deal1", method=RequestMethod.POST)
 	public String deal1(@RequestParam Map<String, Object> params,  Model model){
 		String id = (String) params.get("id");
 		if(null!=id && !"".equals(id)){
 			//通过通知书处理
-			DataNoticeModel  notice = dataNoticeServiceNew.findByPkId(Integer.parseInt(id));
+			DataNoticeModel  notice = dataNoticeService.findByPkId(Integer.parseInt(id));
 			ModelBase  modelBase = modelBaseService.findById(Long.parseLong(notice.getModelId().toString()));
 			model.addAttribute("dataId", notice.getDataId() )
 				.addAttribute("modelId",notice.getModelId())
@@ -433,7 +433,7 @@ public class DataController
 			String organId = (String) params.get("organId");
 //			String dataDate = (String) params.get("dataDate");
 			ModelBase  modelBase = modelBaseService.findById(Long.parseLong(modelId));
-			ModelData md =  riskDetectionServiceNew.findModelDataByPkid(Integer.parseInt(dataId));
+			ModelData md =  riskDetectionService.findModelDataByPkid(Integer.parseInt(dataId));
 			SysOffice organ = sysOfficeService.selectByPrimaryKey(Long.parseLong(md.getOrganId()));
 			model.addAttribute("dataId", dataId )
 				 .addAttribute("Id", modelId )
@@ -448,22 +448,22 @@ public class DataController
 				 .addAttribute("flag", true);	//用来区分是否从数据源处理还是通知书中处理，true为数据源处理
 		}
 		
-		return "risknew/deal1";
+		return "risk/deal1";
 	}
 	
 	
-	/**
+	*//**
 	 * 现场核实，获取数据id并跳转
 	 * @param params
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="deal2", method=RequestMethod.POST)
 	public String deal2(@RequestParam Map<String, Object> params,  Model model){
 		String id = (String) params.get("id");
 		if(null!=id && !"".equals(id)){
 			//通过通知书处理
-			DataNoticeModel  notice = dataNoticeServiceNew.findByPkId(Integer.parseInt(id));
+			DataNoticeModel  notice = dataNoticeService.findByPkId(Integer.parseInt(id));
 			ModelBase  modelBase = modelBaseService.findById(Long.parseLong(notice.getModelId().toString()));
 			model.addAttribute("dataId", notice.getDataId() )
 				.addAttribute("modelId",notice.getModelId())
@@ -482,7 +482,7 @@ public class DataController
 			String organId = (String) params.get("organId");
 			String dataDate = (String) params.get("dataDate");
 			ModelBase  modelBase = modelBaseService.findById(Long.parseLong(modelId));
-			ModelData md =  riskDetectionServiceNew.findModelDataByPkid(Integer.parseInt(dataId));
+			ModelData md =  riskDetectionService.findModelDataByPkid(Integer.parseInt(dataId));
 			SysOffice organ = sysOfficeService.selectByPrimaryKey(Long.parseLong(md.getOrganId()));
 			model.addAttribute("dataId", dataId )
 				.addAttribute("modelId", modelId )
@@ -496,13 +496,13 @@ public class DataController
 				.addAttribute("flag", true);	//用来区分是否从数据源处理还是通知书中处理，true为数据源处理
 		}
 		
-		return "risknew/deal1";
+		return "risk/deal1";
 	}
 	
-	/**
+	*//**
 	 * 下发通知
 	* @param params
-	 */
+	 *//*
 	@RequestMapping(value = "sendNotice",method=RequestMethod.POST)  
     public @ResponseBody Integer  sendNotice(@ModelAttribute DataNoticeModel notice, 
     		@RequestParam(value = "file", required = false) MultipartFile file,
@@ -516,12 +516,12 @@ public class DataController
 	 	//数据id
 		notice.setDataId(dataId);
 		
-		ModelData md =  riskDetectionServiceNew.findModelDataByPkid(dataId);
+		ModelData md =  riskDetectionService.findModelDataByPkid(dataId);
 		params.put("dataId", notice.getDataId());
 		params.put("organId", SysUserUtils.getSessionLoginUser().getOfficeId());
 		//先判断省级是否自行处理了
 		if(md.getDealStatus() == 1){
-			DataNoticeModel dataNoticeModel = dataNoticeServiceNew.checkIsReapted(params);
+			DataNoticeModel dataNoticeModel = dataNoticeService.checkIsReapted(params);
 			if(dataNoticeModel == null){
 				Long docId = null;
 				InputStream is=null;
@@ -530,7 +530,7 @@ public class DataController
 				if(file != null){
 					try
 					{
-						docId = modelDataFileServiceNew.generateId();
+						docId = modelDataFileService.generateId();
 						is = file.getInputStream();
 						byte[] data = new byte[(int) file.getSize()];  
 						is.read(data);
@@ -539,7 +539,7 @@ public class DataController
 						dataFile.setFileName(FileUtils.getFileNameNoSuffix(file.getOriginalFilename()));
 						dataFile.setExtName(FileUtils.getFileSuffix(file.getOriginalFilename()));
 						dataFile.setFileContent(data);;
-						modelDataFileServiceNew.saveFile(dataFile);
+						modelDataFileService.saveFile(dataFile);
 					} catch (IOException e)
 					{
 						return -1;
@@ -567,10 +567,10 @@ public class DataController
 				if(docId != null){
 					notice.setDocId(docId);
 				}
-				int count1 =  dataNoticeServiceNew.SendNotice(notice);
+				int count1 =  dataNoticeService.SendNotice(notice);
 				if(count1 > 0){
 					if(flag.equals("true")){
-						int count2 = dataNoticeServiceNew.updateStatus(notice.getDataId(),2);
+						int count2 = dataNoticeService.updateStatus(notice.getDataId(),2);
 						if(count2 > 0){
 							//return count1;
 						}else{
@@ -581,7 +581,7 @@ public class DataController
 						params.put("noticeStatus", "2");
 						params.put("dataId", notice.getDataId());
 						params.put("organId", currentOrgan.getParentId());
-						int count3 = dataNoticeServiceNew.updateNoticeStatus(params);
+						int count3 = dataNoticeService.updateNoticeStatus(params);
 						if(count3 > 0){
 							//return count1;
 						}else{
@@ -603,12 +603,12 @@ public class DataController
     }  
 	
 	
-	/**
+	*//**
 	 * 跳转到历史处理记录
 	 * @param params
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="toHistory",method=RequestMethod.POST)
 	public String toHistory(@RequestParam Map<String, Object> params, Model model){
 			model.addAttribute("modelId", params.get("modelId").toString())
@@ -617,33 +617,33 @@ public class DataController
 				 .addAttribute("noticeId", params.get("noticeId").toString())
 				 .addAttribute("dealType", params.get("dealType").toString())
 				 .addAttribute("dataId", params.get("dataId").toString());
-		return  "risknew/history-deal-info";
+		return  "risk/history-deal-info";
 	}
 	
 	
-	/**
+	*//**
 	 * 历史处理记录列表
 	 * @param params
 	 * @param response
 	 * @throws Exception
-	 */
+	 *//*
 	@RequestMapping(value="historyDealInfo", method=RequestMethod.POST)
 	public void historyDealInfo(@RequestParam Map<String, Object> params,
 			HttpServletResponse response) throws Exception
 	{
-		PageInfo<DataDealModel> page = dataDealServiceNew.findPageInfo(params);
+		PageInfo<DataDealModel> page = dataDealService.findPageInfo(params);
 		ResponseUtils.renderJson(response, page);
 	}
 	
 	
-	/**
+	*//**
 	 * 快速处理
 	 * @param params
 	 * @param request
 	 * @param response
 	 * @return
 	 * @throws Exception
-	 */
+	 *//*
 	@RequestMapping(value="fastDeal", method=RequestMethod.POST)
 	public @ResponseBody int fastDeal(@RequestParam Map<String, Object> params,HttpServletRequest request,
 			HttpServletResponse response) throws Exception
@@ -653,17 +653,17 @@ public class DataController
 			Long id = Long.parseLong(params.get("id").toString().trim());
 			Integer dataId = Integer.parseInt(params.get("dataId").toString().trim());
 			Long docId = null;
-			DataDealModel temp = dataDealServiceNew.selectByPrimaryKey(id);
+			DataDealModel temp = dataDealService.selectByPrimaryKey(id);
 			if(temp.getDocId() != null){
-				docId = modelDataFileServiceNew.generateId();
-				ModelDataFile modelDataFile = modelDataFileServiceNew.findById(temp.getDocId());
+				docId = modelDataFileService.generateId();
+				ModelDataFile modelDataFile = modelDataFileService.findById(temp.getDocId());
 				modelDataFile.setDataId(dataId);
 				modelDataFile.setId(docId);
-				modelDataFileServiceNew.saveFile(modelDataFile);
+				modelDataFileService.saveFile(modelDataFile);
 			}
 			DataDealModel dataDealModel = new DataDealModel();
 			temp.setDataId(dataId);
-			temp.setId(dataDealServiceNew.generateId());
+			temp.setId(dataDealService.generateId());
 			BeanUtils.copyProperties(dataDealModel, temp);
 			ModelMap model = new ModelMap();
 			params.put("flag", params.get("flag").toString());
@@ -676,10 +676,10 @@ public class DataController
 	}
 	
 	
-	/**
+	*//**
 	 * 现场核实/非现场核实
 	 * @param params
-	 */
+	 *//*
 	@RequestMapping(value="dataDeal",method=RequestMethod.POST)
 	public @ResponseBody int dataDeal(@ModelAttribute DataDealModel dataDealModel, 
     		@RequestParam(value = "file", required = false) MultipartFile file, @RequestParam Map<String, Object> params,
@@ -688,12 +688,12 @@ public class DataController
 		ModelDataFile dataFile = new ModelDataFile();
 	 	Integer dataId = dataDealModel.getDataId();
 	 	//从数据库查找是否有历史处理记录
-	 	DataDealModel temp = dataDealServiceNew.findBydataId(dataId);
+	 	DataDealModel temp = dataDealService.findBydataId(dataId);
 	 	SysUser user = SysUserUtils.getSessionLoginUser();
 	 	//通知书主键
 	 	String noticeId = (String) params.get("noticeId");
 	 	String flag = params.get("flag").toString();
-	 	ModelData md =  riskDetectionServiceNew.findModelDataByPkid(dataId);
+	 	ModelData md =  riskDetectionService.findModelDataByPkid(dataId);
 //	 	DataNoticeModel dataNoticeModel = dataNoticeService.findByPkId(Integer.parseInt(noticeId));
 		InputStream is=null;
 //		if(!dataNoticeModel.getNoticeStatus().equals("2")){
@@ -704,7 +704,7 @@ public class DataController
 					if(file != null){
 						try
 						{
-							docId = modelDataFileServiceNew.generateId();
+							docId = modelDataFileService.generateId();
 							is = file.getInputStream();
 							byte[] data = new byte[(int) file.getSize()];  
 							is.read(data);
@@ -713,7 +713,7 @@ public class DataController
 							dataFile.setFileName(FileUtils.getFileNameNoSuffix(file.getOriginalFilename()));
 							dataFile.setExtName(FileUtils.getFileSuffix(file.getOriginalFilename()));
 							dataFile.setFileContent(data);
-							modelDataFileServiceNew.saveFile(dataFile);	//下发和核实保存文件同一个方法
+							modelDataFileService.saveFile(dataFile);	//下发和核实保存文件同一个方法
 						} catch (IOException e)
 						{
 							return -1;
@@ -725,10 +725,10 @@ public class DataController
 			        if(docId != null){
 			        	dataDealModel.setDocId(docId);
 					}
-			        int count1 =  dataDealServiceNew.dataDeal(dataDealModel);
+			        int count1 =  dataDealService.dataDeal(dataDealModel);
 			        if(count1 > 0){
 			        	if(flag.equals("true")){
-			        		int count2 = dataDealServiceNew.updateDealStatus(dataId, 2);
+			        		int count2 = dataDealService.updateDealStatus(dataId, 2);
 			        		if(count2 > 0){
 								return count1;
 					    	}else{
@@ -737,14 +737,14 @@ public class DataController
 			        	}else{
 			        		//更改通知书的状态
 				        	if(null!=noticeId && !"".equals(noticeId)){
-				        		int count2 = dataDealServiceNew.updateDealStatus(dataId, 2);
+				        		int count2 = dataDealService.updateDealStatus(dataId, 2);
 				        		Map<String,Object> p = new HashMap<String,Object>();
 				        		p.put("noticeStatus", "4");
 				        		p.put("dealStatus", "2");
 				        		p.put("dataId", dataId);
 				        		p.put("noticeEndtime", DateUtil.getDate(new Date()));
 				        		p.put("noticeDealer", user.getName());
-				        		int count3 = dataNoticeServiceNew.endNoticeStatus(p);
+				        		int count3 = dataNoticeService.endNoticeStatus(p);
 				        		if(count2 > 0 && count3 > 0){
 									return count1;
 						    	}else{
@@ -769,7 +769,7 @@ public class DataController
 				if(file != null){
 					try
 					{
-						docId = modelDataFileServiceNew.generateId();
+						docId = modelDataFileService.generateId();
 						is = file.getInputStream();
 						byte[] data = new byte[(int) file.getSize()];  
 						is.read(data);
@@ -778,7 +778,7 @@ public class DataController
 						dataFile.setFileName(FileUtils.getFileNameNoSuffix(file.getOriginalFilename()));
 						dataFile.setExtName(FileUtils.getFileSuffix(file.getOriginalFilename()));
 						dataFile.setFileContent(data);
-						modelDataFileServiceNew.saveFile(dataFile);	//下发和核实保存文件同一个方法
+						modelDataFileService.saveFile(dataFile);	//下发和核实保存文件同一个方法
 					} catch (IOException e)
 					{
 						return -1;
@@ -790,10 +790,10 @@ public class DataController
 		        if(docId != null){
 		        	dataDealModel.setDocId(docId);
 				}
-		        int count1 =  dataDealServiceNew.dataDeal(dataDealModel);
+		        int count1 =  dataDealService.dataDeal(dataDealModel);
 		        if(count1 > 0){
 		        	if(flag.equals("true")){
-		        		int count2 = dataDealServiceNew.updateDealStatus(dataId, 2);
+		        		int count2 = dataDealService.updateDealStatus(dataId, 2);
 		        		if(count2 > 0){
 							return count1;
 				    	}else{
@@ -802,14 +802,14 @@ public class DataController
 		        	}else{
 		        		//更改通知书的状态
 			        	if(null!=noticeId && !"".equals(noticeId)){
-			        		int count2 = dataDealServiceNew.updateDealStatus(dataId, 2);
+			        		int count2 = dataDealService.updateDealStatus(dataId, 2);
 			        		Map<String,Object> p = new HashMap<String,Object>();
 			        		p.put("noticeStatus", "4");
 			        		p.put("dealStatus", "2");
 			        		p.put("dataId", dataId);
 			        		p.put("noticeEndtime", DateUtil.getDate(new Date()));
 			        		p.put("noticeDealer", user.getName());
-			        		int count3 = dataNoticeServiceNew.endNoticeStatus(p);
+			        		int count3 = dataNoticeService.endNoticeStatus(p);
 			        		if(count2 > 0 && count3 > 0){
 								return count1;
 					    	}else{
@@ -831,48 +831,48 @@ public class DataController
 	 
 	
 	
-	/**
+	*//**
 	 * 查询数据结果表头
 	 * @param params
 	 * @param model
 	 * @param response
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="queryHeaders",method = RequestMethod.POST)
 	public String queryHeaders(@RequestParam  Map<String, Object> params, Model model,
 			HttpServletResponse response){
-		List<Map<String, Object>> headerList = dataNoticeServiceNew.queryHeaders(params);
+		List<Map<String, Object>> headerList = dataNoticeService.queryHeaders(params);
 		model.addAttribute("headerList",headerList)
 			 .addAttribute("modelId", params.get("modelId"))
 			 .addAttribute("organId", params.get("organId"))
 			 .addAttribute("custNo", params.get("custNo"))
 			 .addAttribute("dealStatus", params.get("dealStatus"));
-		return "risknew/detail";
+		return "risk/detail";
 	}
 	
-	/**
+	*//**
 	 * 查询数据结果内容
 	 * @param params
 	 * @param response
 	 * @throws Exception
-	 */
+	 *//*
 	@RequestMapping(value="queryContents",method = RequestMethod.POST)
 	public void queryContents(@RequestParam  Map<String, Object> params, 
 			HttpServletResponse response) throws Exception{
 		SysUser user = SysUserUtils.getSessionLoginUser();
 		params.put("organId", user.getOfficeId());
-		PageInfo<Map<String,Object>> page = dataNoticeServiceNew.findPageInfo(params);
+		PageInfo<Map<String,Object>> page = dataNoticeService.findPageInfo(params);
 		ResponseUtils.renderJson(response, page);
 	}
 	
 	
-	/**
+	*//**
 	 * 查询单条详细数据键
 	 * @param params
 	 * @param model
 	 * @param response
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="queryDetailsHeaders",method = RequestMethod.POST)
 	public String queryDetailsHeaders(@RequestParam  Map<String, Object> params, Model model,
 			HttpServletResponse response){
@@ -880,22 +880,22 @@ public class DataController
 		Integer modelId = Integer.parseInt(params.get("modelid").toString());
 		Integer dataId = Integer.parseInt(params.get("dataid").toString());
 		newParams.put("modelId", modelId);
-		List<Map<String, Object>> headerList = dataNoticeServiceNew.queryHeaders(newParams);
+		List<Map<String, Object>> headerList = dataNoticeService.queryHeaders(newParams);
 		model.addAttribute("headerList",headerList)
 			 .addAttribute("modelId", modelId)
 			 .addAttribute("dataId", dataId);
-		return "risknew/detail2";
+		return "risk/detail2";
 	}
 	
-	/**
+	*//**
 	 * 查询单条详细数据值
 	 * @param params
 	 * @param response
-	 */
+	 *//*
 	@RequestMapping(value="queryDetailsContents",method = RequestMethod.POST)
 	public void queryDetailsContents(@RequestParam  Map<String, Object> params,
 			HttpServletResponse response){
-		List<Map<String, Object>> dataList = dataNoticeServiceNew.queryContents(params);
+		List<Map<String, Object>> dataList = dataNoticeService.queryContents(params);
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 		Map<String,Object> dataMap = dataList.get(0);
 		Map<String,Object> map = null;
@@ -910,10 +910,10 @@ public class DataController
 	
 	
 	
-	/**
+	*//**
 	 * 批量导出模型数据
 	 * @throws Exception 
-	 */
+	 *//*
 	@RequestMapping(value = "export",method = RequestMethod.POST)
 	public void exportFile(@RequestParam Map<String, Object> params,HttpServletRequest request,
 			HttpServletResponse response) throws Exception{
@@ -943,20 +943,20 @@ public class DataController
 		
 	}
 	
-	/**
+	*//**
 	 * 生成临时文件
 	 * @param params
 	 * @param response
 	 * @return
 	 * @throws UnsupportedEncodingException 
-	 */
+	 *//*
 	public File generateFile(Map<String, Object> params,HttpServletRequest request, HttpServletResponse response) 
 			throws Exception{
 		String filePath = request.getSession().getServletContext().getRealPath("/")+"WEB-INF";
 		String modelName = null;
-		modelName = riskDetectionServiceNew.findById(Long.parseLong(params.get("modelId").toString())).getName();
-		List<Map<String, Object>> headerList = dataNoticeServiceNew.queryHeaders(params);//表头
-		List<Map<String, Object>> dataList = dataNoticeServiceNew.queryContents(params);//数据
+		modelName = riskDetectionService.findById(Long.parseLong(params.get("modelId").toString())).getName();
+		List<Map<String, Object>> headerList = dataNoticeService.queryHeaders(params);//表头
+		List<Map<String, Object>> dataList = dataNoticeService.queryContents(params);//数据
 		Map<String, Object> headerMap = new HashMap<String, Object>();
 		Map<String, String> titleMap = Maps.newLinkedHashMap();
 		
@@ -992,16 +992,16 @@ public class DataController
 		return null;
 	}
 	
-	/**
+	*//**
 	 * 下载单个文件
 	 * @param params
 	 * @param response
-	 */
+	 *//*
 	public void downloadFile(Map<String, Object> params,HttpServletResponse response){
 		String modelName = null;
-		modelName = riskDetectionServiceNew.findById(Long.parseLong(params.get("modelId").toString())).getName();
-		List<Map<String, Object>> headerList = dataNoticeServiceNew.queryHeaders(params);//表头
-		List<Map<String, Object>> dataList = dataNoticeServiceNew.queryContents(params);//数据
+		modelName = riskDetectionService.findById(Long.parseLong(params.get("modelId").toString())).getName();
+		List<Map<String, Object>> headerList = dataNoticeService.queryHeaders(params);//表头
+		List<Map<String, Object>> dataList = dataNoticeService.queryContents(params);//数据
 		Map<String, Object> headerMap = new HashMap<String, Object>();
 		Map<String, String> titleMap = Maps.newLinkedHashMap();
 		
@@ -1034,3 +1034,4 @@ public class DataController
 		}
 	}
 }
+*/

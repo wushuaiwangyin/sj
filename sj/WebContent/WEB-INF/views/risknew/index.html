@@ -42,7 +42,7 @@
 						<h5 class="widget-title">上月跑批</h5>
 						<div class="widget-toolbar">
 							<span class="btn btn-purple btn-xs"
-								  onclick="Angel.downloadFile('','${ctxPath}/risknew/detection/exportDataRunModel?flag=1')">
+								  onclick="Angel.downloadFile('','${ctxPath}/risk/detection/exportDataRunModel?flag=1')">
 							<i class="ace-icon fa fa-cloud-download bigger-130"></i>
 							导出Excel</span>
 						</div>
@@ -102,7 +102,7 @@
 						<h5 class="widget-title">昨日跑批</h5>
 						<div class="widget-toolbar">
 							<span class="btn btn-purple btn-xs"
-								   onclick="Angel.downloadFile('','${ctxPath}/risknew/detection/exportDataRunModel?flag=0')">
+								   onclick="Angel.downloadFile('','${ctxPath}/risk/detection/exportDataRunModel?flag=0')">
 							<i class="ace-icon fa fa-cloud-download bigger-130"></i>
 							导出Excel</span>
 						</div>
@@ -337,7 +337,7 @@
 	//加载机构
 	function loadByBuzOrg(){
 		$.ajax({
-			url: "${ctxPath}/risknew/detection/tree",
+			url: "${ctxPath}/risk/detection/tree",
 			method:"post",
 			dataType: "json",
 			async: false,
@@ -391,7 +391,7 @@
 		var models = [];
 		var title;
 		$.ajax({
-			url: "${ctxPath}/risknew/detection/countByPie?flag="+flag,
+			url: "${ctxPath}/risk/detection/countByPie?flag="+flag,
 			method:"post",
 			dataType: "json",
 			async: false,
@@ -475,7 +475,7 @@
 		var ogranid = [];
 		var count = [];
 		$.ajax({
-			url: "${ctxPath}/risknew/detection/findByOrgan?flag=0&property="+property+"&buzLine="+buzLine,
+			url: "${ctxPath}/risk/detection/findByOrgan?flag=0&property="+property+"&buzLine="+buzLine,
 			method:"post",
 			dataType: "json",
 			async: false,
@@ -543,7 +543,7 @@
 		var ogranid = [];
 		var count = [];
 		$.ajax({
-			url: "${ctxPath}/risknew/detection/findByOrgan?flag=1&property="+property+"&buzLine="+buzLine,
+			url: "${ctxPath}/risk/detection/findByOrgan?flag=1&property="+property+"&buzLine="+buzLine,
 			method:"post",
 			dataType: "json",
 			async: false,
@@ -612,7 +612,7 @@
 		var value1 = [];
 		var value2 = [];
 		$.ajax({
-			url: "${ctxPath}/risknew/detection/countByBar",
+			url: "${ctxPath}/risk/detection/countByBar",
 			method:"post",
 			dataType: "json",
 			async: false,
@@ -731,7 +731,7 @@
 	var zTreeNodes;
 	function loadByBuzLine(){
 		$.ajax({
-			url: "${ctxPath}/risknew/detection/buzLine",
+			url: "${ctxPath}/risk/detection/buzLine",
 			dataType: "json",
 			async: false,
 			success: function(data) {
@@ -751,7 +751,7 @@
 	//点击业务条线查询
 	function queryByStatus(property,buzLine){
 		$.ajax({
-			url: "${ctxPath}/risknew/detection/status?property="+property+"&buzLine="+buzLine,
+			url: "${ctxPath}/risk/detection/status?property="+property+"&buzLine="+buzLine,
 			method:"post",
 			dataType: "json",
 			async: false,
@@ -769,13 +769,13 @@
 		var a = document.getElementById(name);
 		var link = a.getAttribute('href');
 		if (name == "合规模型") {
-			a.href = "#/ajax/risknew/detection/hg";
+			a.href = "#/ajax/risk/detection/hg";
 		} else if (name == "监管模型") {
-			a.href = "#/ajax/risknew/detection/jg";
+			a.href = "#/ajax/risk/detection/jg";
 		} else if (name == "重大风险模型") {
-			a.href = "#/ajax/risknw/detection/big";
+			a.href = "#/ajax/risk/detection/big";
 		} else if (name == "审计专项模型") {
-			a.href = "#/ajax/risknew/detection/sjzx";
+			a.href = "#/ajax/risk/detection/sjzx";
 		} else if (name == "二次分析模型") {
 			a.href = "#/ajax/second/model";
 		}

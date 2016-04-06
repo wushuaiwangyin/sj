@@ -1,4 +1,4 @@
-package com.krm.dbaudit.web.risknew.controller;
+/*package com.krm.dbaudit.web.risk.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +27,8 @@ import com.krm.dbaudit.web.model.model.AuditType;
 import com.krm.dbaudit.web.model.model.ModelProperty;
 import com.krm.dbaudit.web.model.service.AuditTypeService;
 import com.krm.dbaudit.web.model.service.ModelPropertyService;
-import com.krm.dbaudit.web.risknew.model.RiskModelBase;
-import com.krm.dbaudit.web.risknew.service.RiskDetectionService;
+import com.krm.dbaudit.web.risk.model.RiskModelBase;
+import com.krm.dbaudit.web.risk.service.RiskDetectionService;
 import com.krm.dbaudit.web.sys.model.SysDict;
 import com.krm.dbaudit.web.sys.model.SysOffice;
 import com.krm.dbaudit.web.sys.model.SysUser;
@@ -38,17 +38,17 @@ import com.krm.dbaudit.web.util.ListUtil;
 import com.krm.dbaudit.web.util.ResponseUtils;
 import com.krm.dbaudit.web.util.SysUserUtils;
 
-/**
+*//**
  * 风险监测
  * @author Parker
  *
- */
-@Controller("riskDetectionControllerNew")
-@RequestMapping("risknew/detection")
+ *//*
+@Controller
+@RequestMapping("risk/detection")
 public class RiskDetectionController
 {
 	@Resource
-	private RiskDetectionService riskDetectionServiceNew;
+	private RiskDetectionService riskDetectionService;
 	
 	@Resource
 	private ModelPropertyService modelPropertyService;
@@ -60,75 +60,75 @@ public class RiskDetectionController
 	private AuditTypeService auditTypeService;
 	
 	static SysOfficeService sysOfficeService = SpringContextHolder.getBean("sysOfficeService");
-	/**
+	*//**
 	 * 首页跑批模型数量方法
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping("control")
 	public String toIndex(Model model) {
 		model.addAttribute("lastMonthRunList", findRunAmount(1));
 		model.addAttribute("yesterdayRunList", findRunAmount(0));
-		return "risknew/index";
+		return "risk/index";
 	}
 	
-	/**
+	*//**
 	 * 跳转合规模型页面
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping("hg")
 	public String page2(Model model){
-		model.addAttribute("property", riskDetectionServiceNew.getProperty("合规模型"));
-		return "risknew/hg";
+		model.addAttribute("property", riskDetectionService.getProperty("合规模型"));
+		return "risk/hg";
 	}
 	
-	/**
+	*//**
 	 * 跳转到重大风险模型页面
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping("big")
 	public String page3(Model model){
-		model.addAttribute("property", riskDetectionServiceNew.getProperty("重大风险模型"));
-		return "risknew/zd";
+		model.addAttribute("property", riskDetectionService.getProperty("重大风险模型"));
+		return "risk/zd";
 	}
 	
-	/**
+	*//**
 	 * 跳转到监管模型页面
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequestMapping("jg")
 	public String page5(Model model){
-		model.addAttribute("property", riskDetectionServiceNew.getProperty("监管模型"));
-		return "risknew/jg";
+		model.addAttribute("property", riskDetectionService.getProperty("监管模型"));
+		return "risk/jg";
 	}
 	
-	/**
+	*//**
 	 * 进入审计专项模型主界面
 	 * @param params
 	 * @param response
 	 * @return
-	 */
+	 *//*
 	@RequestMapping("sjzx")
 	public String  showsjzxlayer(@RequestParam Map<String, Object> params, Model model)
 	{
 		model.addAttribute("treeList", auditTypeService.findAllAuditType());
-		return "risknew/sj";
+		return "risk/sj";
 	}	
 	
-	/**
+	*//**
 	 * 查询跑批模型数量
 	 * @param flag(日期标记：1：上月，0：昨日)
 	 * @return
-	 */
+	 *//*
 	public List<Map<String,Object>>  findRunAmount(Integer flag)
 	{
 		Map<String,Object> params = new HashMap<String, Object>();
 		params.put("flag", flag);
 		params.put("status", 8);
-		List<Map<String,Object>> list = riskDetectionServiceNew.findRunAmount(params);
+		List<Map<String,Object>> list = riskDetectionService.findRunAmount(params);
 		Integer total = 0;
 		Map<String,Object> account = new HashMap<String, Object>();
 		for (Iterator<Map<String, Object>> iterator = list.iterator(); iterator.hasNext();)
@@ -144,12 +144,12 @@ public class RiskDetectionController
 		list.add(account);
 		return list;
 	}
-	/**
+	*//**
 	 * 分页显示
 	* @param params
 	* @return
 	 * @throws Exception 
-	 */
+	 *//*
 	@RequestMapping(value="list", method=RequestMethod.POST)
 	public void list(@RequestParam Map<String, Object> params,
 			HttpServletResponse response) throws Exception
@@ -185,15 +185,15 @@ public class RiskDetectionController
 			SysUser sysUser = SysUserUtils.getCacheLoginUser();
 			map.put("organId", sysUser.getOfficeId());
 		}
-		PageInfo<RiskModelBase> page = riskDetectionServiceNew.findPageInfo(map);
+		PageInfo<RiskModelBase> page = riskDetectionService.findPageInfo(map);
 		ResponseUtils.renderJson(response, page);
 	}
-	/**
+	*//**
 	 * 审计专项分页显示
 	 * @param params
 	 * @return
 	 * @throws Exception 
-	 */
+	 *//*
 	@RequestMapping(value="list1", method=RequestMethod.POST)
 	public void list1(@RequestParam Map<String, Object> params,
 			HttpServletResponse response) throws Exception
@@ -229,22 +229,22 @@ public class RiskDetectionController
 			SysUser sysUser = SysUserUtils.getCacheLoginUser();
 			map.put("organId", sysUser.getOfficeId());
 		}
-		PageInfo<RiskModelBase> page = riskDetectionServiceNew.findPageInfoByAudit(map);
+		PageInfo<RiskModelBase> page = riskDetectionService.findPageInfoByAudit(map);
 		ResponseUtils.renderJson(response, page);
 			}
 	
 	
-	/**
+	*//**
 	 * 饼图查询模型跑批数量
 	 * @param flag
 	 * @param response
-	 */
+	 *//*
 	@RequestMapping(value="countByPie", method=RequestMethod.POST)
 	public void  countByPie(@RequestParam Map<String, Object> params, HttpServletResponse response)
 	{
 		Map<String,Object> map = new HashMap<String, Object>();
 		params.put("status", 8);
-		List<Map<String,Object>> list = riskDetectionServiceNew.findRunAmount(params);
+		List<Map<String,Object>> list = riskDetectionService.findRunAmount(params);
 		for (Iterator<Map<String, Object>> iterator = list.iterator(); iterator.hasNext();)
 		{
 			Map<String, Object> map1 = (Map<String, Object>) iterator.next();
@@ -261,25 +261,25 @@ public class RiskDetectionController
         ResponseUtils.renderJson(response, list);
 	}
 	
-	/**
+	*//**
 	 * 柱状图查询新增模型数量
 	 * @param response
-	 */
+	 *//*
 	@RequestMapping(value="countByBar", method=RequestMethod.POST)
 	public void  countByBar(HttpServletResponse response)
 	{
 		Map<String,Object> params = new HashMap<String, Object>();
 		params.put("status", 8);
-		List<Map<String,Object>> list = riskDetectionServiceNew.countByBar(params);
+		List<Map<String,Object>> list = riskDetectionService.countByBar(params);
 		list = ListUtil.mergeList(list);
 		ResponseUtils.renderJson(response, list);
 	}
 	
-	/**
+	*//**
 	 * 柱状图机构新增模型排行榜
 	 * @param params
 	 * @param response
-	 */
+	 *//*
 	@RequestMapping(value="findByOrgan", method=RequestMethod.POST)
 	public void  findByOrgan(@RequestParam Map<String, Object> params, HttpServletResponse response)
 	{
@@ -287,14 +287,14 @@ public class RiskDetectionController
 		Integer flag = Integer.parseInt(params.get("flag").toString());
 		List<Map<String,Object>> list =  new ArrayList<Map<String,Object>>();
 		if(flag == 1){
-			list = riskDetectionServiceNew.findLastMonthByOrgan(params);
+			list = riskDetectionService.findLastMonthByOrgan(params);
 			if(list.size() == 0){
 				map.put("name", "无相关数据！");
 				map.put("count", 0);
 				list.add(map);
 			}
 		}else{
-			list = riskDetectionServiceNew.findYesterdayByOrgan(params);
+			list = riskDetectionService.findYesterdayByOrgan(params);
 			if(list.size() == 0){
 				map.put("name", "无相关数据！");
 				map.put("count", 0);
@@ -304,11 +304,11 @@ public class RiskDetectionController
 		ResponseUtils.renderJson(response, list);
 	}
 	
-	/**
+	*//**
 	 * 首页跑批模型数量导出
 	 * @param params
 	 * @param response
-	 */
+	 *//*
 	@RequestMapping(value="exportDataRunModel",method=RequestMethod.POST)
 	public void exportDataRunModel(@RequestParam Map<String, Object> params,HttpServletResponse response)
 	{
@@ -337,10 +337,10 @@ public class RiskDetectionController
 		}
 	}
 	
-	/**
+	*//**
 	 * 业务条线树
 	 * @param response
-	 */
+	 *//*
 	@RequestMapping(value="buzLine",method=RequestMethod.GET)
 	public void findBuzLine(HttpServletResponse response,Long property)
 	{
@@ -419,16 +419,16 @@ public class RiskDetectionController
 	}
 	
 	
-	/**
+	*//**
 	 * 专项树
 	 * @param property
 	 * @param line
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value = "auditTree")
 	public @ResponseBody List<AuditType> tree(Long property,String line) {
 		List<AuditType> auditTypeList = auditTypeService.findAllAuditType();
-		List<AuditModel> auditModelList = riskDetectionServiceNew.findAllAuditModel();
+		List<AuditModel> auditModelList = riskDetectionService.findAllAuditModel();
 		for (AuditModel auditModel : auditModelList)
 		{
 			AuditType auditType = new AuditType();
@@ -443,17 +443,17 @@ public class RiskDetectionController
 		
 	}
 	
-	/**
+	*//**
 	 * 机构树
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="tree",method = RequestMethod.POST)
 	public @ResponseBody List<SysOffice> getOfficeTreeList(@ModelAttribute SysOffice sysOffice){
 		List<SysOffice> list = SysUserUtils.getUserOffice();
 		return SysUserUtils.getUserOffice();
 	}
 
-/*
+
 
 	/**
 	 * 动态查询数据记录统计
@@ -499,8 +499,9 @@ public class RiskDetectionController
 		});
 		return list;
 	}
-*/		
+		
 	
 	
 	
 }
+*/

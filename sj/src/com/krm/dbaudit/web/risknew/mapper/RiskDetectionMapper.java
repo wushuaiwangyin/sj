@@ -1,15 +1,13 @@
-package com.krm.dbaudit.web.risknew.mapper;
+/*package com.krm.dbaudit.web.risk.mapper;
 
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
-
 import com.github.abel533.mapper.Mapper;
 import com.krm.dbaudit.web.model.model.AuditModel;
-import com.krm.dbaudit.web.risknew.model.ModelData;
-import com.krm.dbaudit.web.risknew.model.RiskModelBase;
-@Repository("riskDetectionMapperNew")
+import com.krm.dbaudit.web.risk.model.ModelData;
+import com.krm.dbaudit.web.risk.model.RiskModelBase;
+
 public interface RiskDetectionMapper extends Mapper<RiskModelBase>
 {
 	public List<RiskModelBase> findPageInfo(Map<String, Object> params);
@@ -42,3 +40,4 @@ public interface RiskDetectionMapper extends Mapper<RiskModelBase>
 
 
 }
+*/

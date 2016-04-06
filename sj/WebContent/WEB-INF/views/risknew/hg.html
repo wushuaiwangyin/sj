@@ -47,7 +47,7 @@
 				</div>
 				<div class="widget-toolbar no-border">
 					<span class="btn btn-purple btn-xs"
-						  onclick="downloadFile('table','${ctxPath}/datanew/export')">
+						  onclick="downloadFile('table','${ctxPath}/data/export')">
 					<i class="ace-icon fa fa-cloud-download bigger-130"></i>
 					导出Excel</span>
 				</div>
@@ -152,7 +152,7 @@
 	<div class="hidden-sm hidden-xs action-buttons">
 		<a class="green" href="javascript:void(0);" title="详细"
 		   data-mode="tableDetails" data-title="详细"
-		   data-url="${ctxPath}/datanew/queryHeaders"
+		   data-url="${ctxPath}/data/queryHeaders"
 		   data-width="80%"
 		   data-height="100%"
 		   data-data="{id:'{row.id}'}"
@@ -178,7 +178,7 @@
 			striped:true,
 			pageNumber:1,
 			sidePagination:'server',
-			url:'${ctxPath}/risknew/detection/list?'+$("#search-form").serialize()+"&property="+property
+			url:'${ctxPath}/risk/detection/list?'+$("#search-form").serialize()+"&property="+property
 	    });
 	})
 	
@@ -207,7 +207,7 @@
 		var params = jQuery("#search-form").serialize(); 
 		params = decodeURIComponent(params,true);
 		params = encodeURI(encodeURI(params));
-		$('#table').bootstrapTable("refresh",{url:"${ctxPath}/risknew/detection/list?"+params})
+		$('#table').bootstrapTable("refresh",{url:"${ctxPath}/risk/detection/list?"+params})
 	}); 
 	
 	$(function () { $("[data-toggle='tooltip']").tooltip(); });
@@ -324,18 +324,18 @@
 	
 	function loadData(buzName){
 		if(buzName == 0 ){
-			$('#table').bootstrapTable("refresh",{url:"${ctxPath}/risknew/detection/list?"+"&property="+property})
+			$('#table').bootstrapTable("refresh",{url:"${ctxPath}/risk/detection/list?"+"&property="+property})
 		}else{
-			$('#table').bootstrapTable("refresh",{url:"${ctxPath}/risknew/detection/list?"+"&property="+property+"&buzLine="+buzName})
+			$('#table').bootstrapTable("refresh",{url:"${ctxPath}/risk/detection/list?"+"&property="+property+"&buzLine="+buzName})
 		}
 			
 	}
 	
 	function loadOrgan(code){
 		if(code == 999999 ){
-			$('#table').bootstrapTable("refresh",{url:"${ctxPath}/risknew/detection/list?"+"&property="+property})
+			$('#table').bootstrapTable("refresh",{url:"${ctxPath}/risk/detection/list?"+"&property="+property})
 		}else{
-			$('#table').bootstrapTable("refresh",{url:"${ctxPath}/risknew/detection/list?"+"&property="+property+"&organId="+code})
+			$('#table').bootstrapTable("refresh",{url:"${ctxPath}/risk/detection/list?"+"&property="+property+"&organId="+code})
 		}
 			
 	}
@@ -344,7 +344,7 @@
 
 	function loadByBuzOrg(){
 		$.ajax({
-			url: "${ctxPath}/risknew/detection/tree",
+			url: "${ctxPath}/risk/detection/tree",
 			method:"post",
 			dataType: "json",
 			async: false,
@@ -368,7 +368,7 @@
 	var zTreeNodes;
 	function loadByBuzLine(){
 		$.ajax({
-			url: "${ctxPath}/risknew/detection/buzLine?property="+2,
+			url: "${ctxPath}/risk/detection/buzLine?property="+2,
 			dataType: "json",
 			async: false,
 			success: function(data) {

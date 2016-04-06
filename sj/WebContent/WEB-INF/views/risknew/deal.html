@@ -110,7 +110,7 @@ $(function(){
                 $("#dic-save").data('loadi',loadi);
                 curform.ajaxSubmit({
                 	type:'post',
-                	url:'${ctxPath}/datanew/sendNotice',
+                	url:'${ctxPath}/data/sendNotice',
                 	success:function(data){
                 		//alert(data);
                         layer.close($("#dic-save").data('loadi'));
