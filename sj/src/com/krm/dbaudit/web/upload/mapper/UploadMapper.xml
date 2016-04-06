@@ -17,7 +17,7 @@
 		</insert>
 		
 	<select id="generateId" resultType="java.lang.Long">
-		select TOOL_DEF_TABLEFIELD_SEQ.nextval from dual
+		select SEQ_TABLEFIELD_ID.nextval from dual
 	</select>	
 		
 	<insert id="saveTableAlians" parameterType="java.util.List">

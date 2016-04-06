@@ -8,6 +8,7 @@ import java.util.Map;
 public interface ToolModelMapper {
 	public String getToolFlowTree(String tablename);
 	public String intiModelId();
+	public int deleteModelTableFlow(Map<String, Object> params);
 	public int insertModelTableFlow(Map<String, Object> params);
 	public int InsertModelInfo(Map<String, Object> params);
 	public int relationModelField(String modelid);

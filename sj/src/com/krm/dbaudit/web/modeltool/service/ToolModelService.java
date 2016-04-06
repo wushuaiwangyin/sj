@@ -35,6 +35,7 @@ public class ToolModelService {
 	        	{
 	        		String flowtable = itemlist.get(1).toString();
 	        		params.put("tablename", flowtable);
+	        		toolModelMapper.deleteModelTableFlow(params);
 	        		toolModelMapper.insertModelTableFlow(params);
 	        	}
 	        }

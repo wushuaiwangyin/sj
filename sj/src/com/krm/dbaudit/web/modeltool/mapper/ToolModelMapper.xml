@@ -11,6 +11,10 @@
 		select MODEL_BASE_SEQ.nextval as modelid from dual
 	</select>
 	
+	<insert id="deleteModelTableFlow">
+		call PROC_DELETETABLE(#{tablename})
+	</insert>
+	
 	<!--  -->
 	<insert id="insertModelTableFlow">
 		call PROC_SAVETABLE(#{modelid},#{tablename})
