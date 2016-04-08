@@ -111,5 +111,49 @@
                     导入Excel(批量插入表字段)</span>
                     </a>
         </div>
+        <br><br><br>
+        <div class="widget-toolbar">
+			<span class="btn btn-purple btn-minier"
+                  onclick="Angel.downloadFile('search-form','${ctxPath}/model/base/export')">
+			<i class="ace-icon fa fa-cloud-download bigger-130"></i>
+			导出Excel</span>
+        </div>
+        <!-- <div class="widget-body">
+        <div class="widget-main padding-2">
+            <div class="row">
+                <div class="col-sm-12" id="list-page"> -->
+                    <table id="table">
+                        <thead>
+                        <tr>
+                            <th data-field="state" data-checkbox="true"></th>
+                            <th data-field="id" data-align="center" data-width="30" data-sortable="true">编号</th>
+                            <th data-field="name"   data-sortable="true" data-formatter="modelNameFormatter">模型名称</th>
+                            <th data-field="propertyname" data-sort-name="property" data-sortable="true">业务属性</th>
+                            <th data-field="buzlinename" data-sort-name="buzLine" data-sortable="true">业务条线</th>
+                            <th data-field="subjectname" data-sort-name="subject" data-sortable="true">专题</th>
+                            <th data-field="risklevelname" data-sort-name="riskLevel" data-sortable="true" data-cell-style="riskLevelCellStyle">风险级别</th>
+                            <th data-field="statusname"  data-sort-name="status" data-align="center" data-sortable="true" data-formatter="modelStatusFormatter">状态</th>
+                            <!-- <th data-field="id" data-align="center" data-sortable="false" data-width="125"  data-formatter="operatorBtn">操作</th> -->
+                        </tr>
+                        </thead>
+                    </table>
+                <!-- /div>
+            </div>
+        </div>
+    </div> -->
+    <script type="text/javascript">
+    $('#table').bootstrapTable({
+    	iconSize:'sm',
+		pagination:true,
+		method:"post",
+		toolbar:"#toolbar",
+		pageSize:5,
+		 queryParamsType:'limit',
+		striped:true,
+		pageNumber:1,
+		 sidePagination:'server', 
+		url:'${ctxPath}/model/base/list?'
+    });
+    </script>
   </body>
 </html>
